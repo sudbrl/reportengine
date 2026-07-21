@@ -4,9 +4,10 @@ from fpdf import FPDF
 from datetime import datetime
 import copy
 import time
+import os
 
 # ==========================================
-# 🔐 AUTHENTICATION SYSTEM (DTI Profile Style)
+# 🔐 AUTHENTICATION SYSTEM
 # ==========================================
 def _check_credentials(username: str, password: str) -> bool:
     try:
@@ -29,6 +30,7 @@ def login_ui():
         padding: 0 1rem !important;
         margin: 0 auto !important;
     }
+    /* Force the middle column to be a large, prominent card */
     div[data-testid="stHorizontalBlock"] > div:nth-child(2) > div[data-testid="stVerticalBlock"] {
         max-width: 580px !important;
         width: 100% !important;
@@ -60,6 +62,7 @@ def login_ui():
     
     .lp-field-label { display: block; font-size: 0.82rem; font-weight: 600; color: #374151; margin-bottom: 0.4rem; margin-top: 1.2rem; }
     
+    /* Override Streamlit default input styling for login */
     div[data-testid="stTextInput"] label { display: none !important; }
     div[data-testid="stTextInput"] > div { background: transparent !important; }
     div[data-testid="stTextInput"] > div > div {
@@ -104,7 +107,7 @@ def login_ui():
     with card_col:
         st.markdown("""
         <div class="lp-header">
-            <span class="lp-logo"></span>
+            <span class="lp-logo">📊</span>
             <div class="lp-app-name">Integrated Analysis Engine</div>
             <div class="lp-app-tagline">DTI & LTV Credit Assessment Platform</div>
         </div>
@@ -126,7 +129,7 @@ def login_ui():
         if err:
             st.markdown(f'<div class="lp-error"><span>⚠</span><span>{err}</span></div>', unsafe_allow_html=True)
         
-        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)  # Close login-body
         
         if clicked:
             u = str(username).strip(); p = str(password).strip()
@@ -176,6 +179,7 @@ st.markdown("""
 }
 .block-container { max-width: 96% !important; padding-top: 1.5rem !important; }
 
+/* Sidebar Styling */
 [data-testid="stSidebar"] { 
     background: linear-gradient(180deg, #1e1b4b 0%, #312e81 100%); 
     box-shadow: 4px 0 24px rgba(0,0,0,0.18); 
@@ -189,6 +193,7 @@ st.markdown("""
     border-radius: 8px;
 }
 
+/* Professional Sidebar Radio Buttons - FIXED VISIBILITY */
 [data-testid="stSidebar"] .stRadio > div {
     background: rgba(255,255,255,0.95) !important;
     border-radius: 8px;
@@ -207,6 +212,7 @@ st.markdown("""
     accent-color: #7c3aed !important;
 }
 
+/* Professional Sidebar Expanders (Dropdowns) */
 [data-testid="stSidebar"] .stExpander {
     background: rgba(255,255,255,0.05);
     border: 1px solid rgba(255,255,255,0.15);
@@ -225,6 +231,7 @@ st.markdown("""
     padding: 1rem !important;
 }
 
+/* Main App Inputs & Buttons */
 div[data-testid="stTextInput"] input, div[data-testid="stNumberInput"] input {
     border-radius: 10px !important; border: 1px solid #e2e8f0 !important;
     padding: 0.65rem 0.9rem !important; font-size: 0.95rem !important;
@@ -327,7 +334,7 @@ def init_state():
 init_state()
 
 # ==========================================
-# 🧮 HELPER FUNCTIONS
+# 🧮 HELPER & LTV ENGINE FUNCTIONS
 # ==========================================
 def get_policy_dict():
     return {p["Loan Type"]: (None if p["Unsecured"] else p["Max LTV%"]) for p in st.session_state.ltv_policy}
@@ -466,6 +473,9 @@ def run_portfolio_ltv(loans, fmv_sources):
         'wtd_ltv': wtd_ltv, 'aggregate_ltv': aggregate_ltv, 'overall_pass': overall_pass
     }
 
+# ==========================================
+# 🧮 DTI ENGINE
+# ==========================================
 def calculate_obligation(loan_type, principal, rate, tenure):
     if principal <= 0 or rate <= 0: return 0.0
     r_monthly = (rate / 100) / 12
@@ -510,7 +520,7 @@ def run_waterfall_allocation(df, total_income):
     return df_sorted
 
 # ==========================================
-# 📄 PDF GENERATION (FPDF2 - Reliable)
+# 📄 CONTINUOUS PROFESSIONAL PDF ENGINE
 # ==========================================
 class IntegratedPDFReport(FPDF):
     def header(self):
@@ -540,6 +550,7 @@ def generate_integrated_pdf(client_name, report_data):
     pdf.client_name = client_name
     pdf.date_str = datetime.now().strftime("%B %d, %Y")
     
+    # Extract Data
     gross_income = report_data.get('gross_income', 0)
     eff_income = report_data.get('eff_income', 0)
     scenario_name = report_data.get('scenario_name', 'Baseline')
@@ -562,7 +573,9 @@ def generate_integrated_pdf(client_name, report_data):
     fmv_sources = report_data.get('fmv_sources', [])
     
     overall_status_pass = dti_overall_pass and ltv_overall_pass
-    
+    status_class = "status-pass" if overall_status_pass else "status-fail"
+    status_text = "OVERALL ASSESSMENT: APPROVED" if overall_status_pass else "OVERALL ASSESSMENT: DECLINED"
+
     pdf.add_page()
     
     # Executive Summary
@@ -763,6 +776,7 @@ def generate_integrated_pdf(client_name, report_data):
 with st.sidebar:
     st.markdown("## ⚙️ Configuration Panel")
     
+    # --- INCOME & STRESS (DTI) ---
     with st.expander("💰 Income & Stress Configuration (DTI)", expanded=True):
         inc_mode = st.radio("Income Entry Method", ["Single Total", "Multiple Sources"])
         gross_income = 0.0
@@ -812,6 +826,7 @@ with st.sidebar:
                     stress_inc_val = active_s['Income']
                     scenario_name = active_c_name
 
+    # --- COLLATERAL (LTV) ---
     with st.expander("🏠 Collateral Configuration (LTV)", expanded=True):
         sb_plot = st.text_input("Property Reference", placeholder="e.g. Plot 42-B")
         sb_owner = st.text_input("Owner Name", placeholder="e.g. John Doe")
@@ -961,6 +976,7 @@ if st.session_state.loans:
     ltv_results, ltv_summary = run_portfolio_ltv(st.session_state.loans, st.session_state.fmv_sources)
     ltv_overall_pass = ltv_summary['overall_pass']
     
+    # --- DTI UI ---
     st.markdown("### 📉 Debt-to-Income (DTI) Analysis")
     if enable_stress:
         st.info(f"Active Scenario: **{scenario_name}** | Rate Shock: +{stress_rate_val}% | Income Shock: -{stress_inc_val}%")
@@ -974,7 +990,7 @@ if st.session_state.loans:
     if dti_overall_pass:
         st.markdown("<div class='status-banner status-pass'>✅ DTI REQUEST APPROVED</div>", unsafe_allow_html=True)
     else:
-        st.markdown("<div class='status-banner status-fail'>️ DTI PORTFOLIO DECLINED</div>", unsafe_allow_html=True)
+        st.markdown("<div class='status-banner status-fail'>⚠️ DTI PORTFOLIO DECLINED</div>", unsafe_allow_html=True)
         
     disp_dti = df_dti_res.copy()
     disp_dti['Status'] = disp_dti['Pass_Status'].apply(lambda x: "✅ PASS" if x else "❌ FAIL")
@@ -982,6 +998,7 @@ if st.session_state.loans:
     
     st.markdown("---")
     
+    # --- LTV UI ---
     st.markdown("### 🏠 Loan-to-Value (LTV) Analysis")
     k5, k6, k7, k8 = st.columns(4)
     with k5: st.markdown(f"<div class='metric-card'><div class='metric-label'>Total Exposure</div><div class='metric-value'>Rs.{ltv_summary['total_exposure']:,.0f}</div></div>", unsafe_allow_html=True)
@@ -1009,12 +1026,13 @@ if st.session_state.loans:
             "ID": r.get('loan_account_id'), "Facility": r['Loan Type'], "Principal": f"Rs. {r['Principal']:,.0f}",
             "Total FMV": "N/A" if is_unsec else f"Rs. {r['Total FMV']:,.0f}",
             "LTV%": ltv_disp, "Max LTV%": "N/A" if (is_unsec or max_ltv is None) else f"{max_ltv:.0f}%",
-            "Status": "✅ PASS" if r['Pass_Status'] else " FAIL"
+            "Status": "✅ PASS" if r['Pass_Status'] else "❌ FAIL"
         })
     st.dataframe(pd.DataFrame(disp_ltv), hide_index=True, use_container_width=True)
     
     st.markdown("---")
     
+    # --- PDF EXPORT ---
     st.markdown("### 📄 Generate Continuous Report")
     ec1, ec2, ec3 = st.columns([2, 1, 1])
     with ec1:
@@ -1029,13 +1047,14 @@ if st.session_state.loans:
                 with st.spinner("Generating continuous document..."):
                     r_type = 'Integrated' if 'Integrated' in report_type else ('DTI' if 'DTI' in report_type else 'LTV')
                     
+                    # Build unified payload
                     payload = {
                         'gross_income': gross_income,
                         'eff_income': eff_income,
                         'scenario_name': scenario_name,
                         'stress_rate': stress_rate_val,
                         'stress_inc': stress_inc_val,
-                        'enable_stress': enable_stress,
+                        'enable_stress': enable_stress,  # Flag to control PDF content
                         'dti_overall_pass': dti_overall_pass,
                         'dti_agg_dti': dti_agg_dti,
                         'dti_shortfall': dti_shortfall,
