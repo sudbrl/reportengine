@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
-from weasyprint import HTML
-from html import escape as esc
+from fpdf import FPDF
 from datetime import datetime
 import copy
 import time
@@ -54,12 +53,12 @@ if not st.session_state['authenticated']:
     st.stop()
 
 # ==========================================
-# 🎨 PAGE CONFIG & GLOBAL STYLES
+#  PAGE CONFIG & GLOBAL STYLES
 # ==========================================
 st.set_page_config(
     page_title="Integrated DTI & LTV Analysis Engine",
     layout="wide",
-    page_icon="",
+    page_icon="🏦",
     initial_sidebar_state="expanded"
 )
 
@@ -122,8 +121,6 @@ div.stButton > button[data-testid="baseButton-primary"]:hover {
     box-shadow: 0 4px 16px rgba(0,0,0,0.06);
 }
 .metric-value { font-size: 2rem; font-weight: 800; color: #0f172a; font-family: 'JetBrains Mono', monospace; }
-.metric-delta-positive { color: #10b981; font-weight: 700; font-size: 0.9rem; }
-.metric-delta-negative { color: #ef4444; font-weight: 700; font-size: 0.9rem; }
 
 .status-banner {
     padding: 1rem 1.5rem; border-radius: 12px; font-weight: 700;
@@ -141,7 +138,7 @@ div.stButton > button[data-testid="baseButton-primary"]:hover {
 """, unsafe_allow_html=True)
 
 # ==========================================
-#  POLICY DATA & CONFIGURATIONS
+# 📋 POLICY DATA & CONFIGURATIONS
 # ==========================================
 LOAN_CONFIG = {
     "Personal Term Loan (PTL)": 2.0, "Personal OD": 2.0, "Share Loan": 2.0,
@@ -347,7 +344,7 @@ def run_portfolio_ltv(loans, fmv_sources):
     }
 
 # ==========================================
-#  DTI ENGINE
+# 🧮 DTI ENGINE
 # ==========================================
 def calculate_obligation(loan_type, principal, rate, tenure):
     if principal <= 0 or rate <= 0: return 0.0
@@ -393,46 +390,37 @@ def run_waterfall_allocation(df, total_income):
     return df_sorted
 
 # ==========================================
-# 📄 CONTINUOUS PROFESSIONAL PDF ENGINE
+# 📄 FPDF2 PDF ENGINE (No System Dependencies)
 # ==========================================
-_PDF_CSS = """
-@page { 
-    size: A4; 
-    margin: 16mm 14mm 18mm 14mm; 
-    @bottom-left { content: "Integrated Credit Analysis"; font-size: 7.5pt; color: #666; }
-    @bottom-center { content: "Page " counter(page) " of " counter(pages); font-size: 7.5pt; color: #666; }
-    @bottom-right { content: "DATE_STR"; font-size: 7.5pt; color: #666; }
-}
-* { box-sizing: border-box; }
-body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 9pt; color: #1a1a1a; line-height: 1.4; }
-h1 { font-size: 18pt; margin: 0 0 4px 0; text-transform: uppercase; color: #002060; letter-spacing: 0.5px; border-bottom: 2.5px solid #7c3aed; padding-bottom: 6px;}
-h2 { font-size: 12pt; margin: 20px 0 10px 0; color: #4338ca; text-transform: uppercase; letter-spacing: 0.3px; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 4px; page-break-after: avoid; }
-h3 { font-size: 10pt; margin: 14px 0 6px 0; color: #1e1b4b; text-transform: uppercase; letter-spacing: 0.2px; page-break-after: avoid; }
-.header-table { width: 100%; margin-bottom: 16px; }
-.header-table td { vertical-align: top; font-size: 9.5pt; }
-.summary-box { border: 1px solid #cbd5e1; padding: 12px 16px; margin-bottom: 16px; background: #f8fafc; border-radius: 4px; page-break-inside: avoid; }
-.status-line { font-weight: bold; font-size: 10pt; margin-bottom: 10px; padding: 6px 10px; border-radius: 4px; }
-.status-pass { color: #065f46; background: #d1fae5; border: 1px solid #a7f3d0; }
-.status-fail { color: #991b1b; background: #fee2e2; border: 1px solid #fecaca; }
-.kv-table { width: 100%; font-size: 9pt; border-collapse: collapse; }
-.kv-table td { padding: 3px 0; } 
-.kv-table td.kv-value { text-align: right; font-weight: bold; font-family: monospace; }
-table.data-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; table-layout: fixed; page-break-inside: auto; }
-table.data-table tr { page-break-inside: avoid; page-break-after: auto; }
-table.data-table thead { display: table-header-group; }
-table.data-table th, table.data-table td { padding: 6px 8px; text-align: left; vertical-align: middle; font-size: 8.5pt; }
-table.data-table th { border-top: 1.5px solid #000; border-bottom: 1.5px solid #000; font-weight: bold; text-transform: uppercase; background: #f1f5f9; font-size: 7.5pt; letter-spacing: 0.3px; }
-table.data-table td { border-bottom: 0.75px solid #e2e8f0; }
-table.data-table tbody tr:nth-child(even) td { background: #f8fafc; }
-table.data-table tr.aggregate-row td { border-top: 1.5px solid #000; border-bottom: 1.5px solid #000; font-weight: bold; background: #e2e8f0 !important; }
-.right { text-align: right !important; } .center { text-align: center !important; }
-.pass { color: #059669; font-weight: bold; } .fail { color: #dc2626; font-weight: bold; }
-.exempt { color: #d97706; font-weight: bold; } .muted { color: #64748b; }
-"""
+class IntegratedPDFReport(FPDF):
+    def header(self):
+        self.set_font('Helvetica', 'B', 16)
+        self.set_text_color(0, 32, 96)
+        self.cell(0, 10, 'Integrated Credit Analysis Report', 0, 1, 'C')
+        self.ln(2)
+        self.set_font('Helvetica', '', 10)
+        self.set_text_color(100)
+        self.cell(95, 5, f"Client: {self.client_name}", 0, 0, 'L')
+        self.cell(0, 5, f"Date: {self.date_str}", 0, 1, 'R')
+        self.ln(4)
+        self.set_draw_color(0, 32, 96)
+        self.set_line_width(0.5)
+        self.line(10, self.get_y(), 200, self.get_y())
+        self.ln(6)
+
+    def footer(self):
+        self.set_y(-15)
+        self.set_font('Helvetica', 'I', 8)
+        self.set_text_color(128)
+        self.cell(0, 10, f'Page {self.page_no()}/{{nb}}', 0, 0, 'C')
 
 def generate_integrated_pdf(client_name, report_data):
-    date_str = datetime.now().strftime("%B %d, %Y")
+    pdf = IntegratedPDFReport()
+    pdf.alias_nb_pages()
+    pdf.client_name = client_name
+    pdf.date_str = datetime.now().strftime("%B %d, %Y")
     
+    # Extract Data
     gross_income = report_data.get('gross_income', 0)
     eff_income = report_data.get('eff_income', 0)
     scenario_name = report_data.get('scenario_name', 'Baseline')
@@ -455,169 +443,208 @@ def generate_integrated_pdf(client_name, report_data):
     fmv_sources = report_data.get('fmv_sources', [])
     
     overall_status_pass = dti_overall_pass and ltv_overall_pass
-    status_class = "status-pass" if overall_status_pass else "status-fail"
-    status_text = "OVERALL ASSESSMENT: APPROVED" if overall_status_pass else "OVERALL ASSESSMENT: DECLINED"
-
-    html = []
-    html.append('<!DOCTYPE html><html><head><meta charset="UTF-8"><style>')
-    html.append(_PDF_CSS.replace('DATE_STR', date_str))
-    html.append('</style></head><body>')
     
-    html.append('<h1>Integrated Credit Analysis Report</h1>')
-    html.append('<table class="header-table"><tr>')
-    html.append(f'<td><strong>Client Name:</strong> {esc(client_name)}</td>')
-    html.append(f'<td class="right"><strong>Analysis Date:</strong> {date_str}</td>')
-    html.append('</tr></table>')
+    pdf.add_page()
     
-    html.append('<h2>Executive Summary</h2>')
-    html.append('<div class="summary-box">')
-    html.append(f'<div class="status-line {status_class}">{status_text}</div>')
-    html.append('<table class="kv-table">')
-    html.append(f'<tr><td>Monthly Gross Income:</td><td class="kv-value">Rs. {gross_income:,.2f}</td>')
-    html.append(f'<td style="width:20px"></td><td>Total Loan Exposure:</td><td class="kv-value">Rs. {total_exposure:,.2f}</td></tr>')
+    # Executive Summary
+    pdf.set_font('Helvetica', 'B', 12)
+    pdf.set_text_color(0, 32, 96)
+    pdf.cell(0, 8, 'Executive Summary', 0, 1)
+    pdf.ln(2)
     
-    if enable_stress:
-        html.append(f'<tr><td>Effective Income (Post-Stress):</td><td class="kv-value">Rs. {eff_income:,.2f}</td>')
+    pdf.set_font('Helvetica', 'B', 10)
+    if overall_status_pass:
+        pdf.set_text_color(6, 95, 70)
+        pdf.cell(0, 6, 'OVERALL ASSESSMENT: APPROVED', 0, 1)
     else:
-        html.append(f'<tr><td>Effective Income (Baseline):</td><td class="kv-value">Rs. {eff_income:,.2f}</td>')
-    html.append(f'<td></td><td>Total Collateral FMV:</td><td class="kv-value">Rs. {total_fmv:,.2f}</td></tr>')
+        pdf.set_text_color(153, 27, 27)
+        pdf.cell(0, 6, 'OVERALL ASSESSMENT: DECLINED', 0, 1)
+    pdf.ln(2)
     
-    html.append(f'<tr><td>Aggregate DTI Coverage:</td><td class="kv-value">{dti_agg_dti:.2f}x</td>')
-    html.append(f'<td></td><td>Aggregate LTV%:</td><td class="kv-value">{aggregate_ltv:.2f}%</td></tr>')
+    pdf.set_font('Helvetica', '', 9)
+    pdf.set_text_color(0)
+    pdf.cell(95, 5, f"Monthly Gross Income: Rs. {gross_income:,.2f}", 0, 0)
+    pdf.cell(0, 5, f"Total Loan Exposure: Rs. {total_exposure:,.2f}", 0, 1)
     
-    dti_status_color = '#059669' if dti_overall_pass else '#dc2626'
-    dti_status_text = 'PASS' if dti_overall_pass else 'FAIL'
-    html.append(f'<tr><td>DTI Income Shortfall:</td><td class="kv-value">Rs. {dti_shortfall:,.2f}</td>')
-    html.append(f'<td></td><td>DTI Status:</td><td class="kv-value" style="color:{dti_status_color}">{dti_status_text}</td></tr>')
-    html.append('</table></div>')
+    inc_label = "Effective Income (Post-Stress):" if enable_stress else "Effective Income (Baseline):"
+    pdf.cell(95, 5, f"{inc_label} Rs. {eff_income:,.2f}", 0, 0)
+    pdf.cell(0, 5, f"Total Collateral FMV: Rs. {total_fmv:,.2f}", 0, 1)
+    
+    pdf.cell(95, 5, f"Aggregate DTI Coverage: {dti_agg_dti:.2f}x", 0, 0)
+    pdf.cell(0, 5, f"Aggregate LTV%: {aggregate_ltv:.2f}%", 0, 1)
+    
+    dti_status = 'PASS' if dti_overall_pass else 'FAIL'
+    pdf.set_font('Helvetica', 'B', 9)
+    pdf.set_text_color(5, 150, 105) if dti_overall_pass else pdf.set_text_color(220, 38, 38)
+    pdf.cell(95, 5, f"DTI Income Shortfall: Rs. {dti_shortfall:,.2f}", 0, 0)
+    pdf.cell(0, 5, f"DTI Status: {dti_status}", 0, 1)
+    pdf.ln(4)
     
     # DTI Section
     if df_dti_res is not None and not df_dti_res.empty:
-        html.append('<h2>Debt-to-Income (DTI) Analysis</h2>')
-        html.append('<h3>Scenario & Income Details</h3>')
-        html.append('<table class="kv-table" style="width: 60%; margin-bottom: 16px;">')
-        html.append(f'<tr><td>Active Scenario:</td><td class="kv-value">{esc(scenario_name)}</td></tr>')
+        pdf.add_page()
+        pdf.set_font('Helvetica', 'B', 12)
+        pdf.set_text_color(0, 32, 96)
+        pdf.cell(0, 8, 'Debt-to-Income (DTI) Analysis', 0, 1)
+        pdf.ln(2)
+        
+        pdf.set_font('Helvetica', '', 9)
+        pdf.set_text_color(0)
+        pdf.cell(0, 5, f"Active Scenario: {scenario_name}", 0, 1)
         if enable_stress:
-            html.append(f'<tr><td>Interest Rate Shock:</td><td class="kv-value">+{stress_rate:.2f}%</td></tr>')
-            html.append(f'<tr><td>Income Reduction:</td><td class="kv-value">-{stress_inc:.2f}%</td></tr>')
-        html.append('</table>')
+            pdf.cell(0, 5, f"Interest Rate Shock: +{stress_rate:.2f}% | Income Reduction: -{stress_inc:.2f}%", 0, 1)
+        pdf.ln(2)
         
         if income_sources:
-            html.append('<h3>Income Sources</h3>')
-            html.append('<table class="data-table" style="width: 50%;"><thead><tr><th>Source</th><th class="right">Amount (Rs.)</th></tr></thead><tbody>')
+            pdf.set_font('Helvetica', 'B', 10)
+            pdf.set_text_color(0, 32, 96)
+            pdf.cell(0, 6, 'Income Sources', 0, 1)
+            pdf.ln(1)
+            pdf.set_font('Helvetica', 'B', 8)
+            pdf.set_text_color(0)
+            pdf.cell(120, 5, 'Source', 1, 0)
+            pdf.cell(70, 5, 'Amount (Rs.)', 1, 1, 'R')
+            pdf.set_font('Helvetica', '', 8)
             for src in income_sources:
-                html.append(f"<tr><td>{esc(src['Source'])}</td><td class='right'>{src['Amount']:,.2f}</td></tr>")
-            html.append(f"<tr class='aggregate-row'><td>Total</td><td class='right'>{gross_income:,.2f}</td></tr></tbody></table>")
-
-        html.append('<h3>Priority Allocation Breakdown</h3>')
-        html.append('<table class="data-table"><thead><tr>')
-        html.append('<th style="width:22%">Facility Type</th>')
-        html.append('<th class="right" style="width:12%">Principal</th>')
-        html.append('<th class="right" style="width:12%">Payment</th>')
-        html.append('<th class="right" style="width:14%">Rem. Income</th>')
-        html.append('<th class="right" style="width:10%">Actual Cov.</th>')
-        html.append('<th class="right" style="width:10%">Req. Cov.</th>')
-        html.append('<th class="center" style="width:10%">Status</th>')
-        html.append('</tr></thead><tbody>')
+                pdf.cell(120, 5, src['Source'], 1, 0)
+                pdf.cell(70, 5, f"{src['Amount']:,.2f}", 1, 1, 'R')
+            pdf.set_font('Helvetica', 'B', 8)
+            pdf.cell(120, 5, 'Total', 1, 0)
+            pdf.cell(70, 5, f"{gross_income:,.2f}", 1, 1, 'R')
+            pdf.ln(4)
         
+        pdf.set_font('Helvetica', 'B', 10)
+        pdf.set_text_color(0, 32, 96)
+        pdf.cell(0, 6, 'Priority Allocation Breakdown', 0, 1)
+        pdf.ln(1)
+        
+        col_w = [45, 25, 25, 25, 25, 25, 20]
+        headers = ["Facility Type", "Principal", "Payment", "Rem. Income", "Act. Cov.", "Req. Cov.", "Status"]
+        pdf.set_font('Helvetica', 'B', 7)
+        pdf.set_text_color(0)
+        for i, h in enumerate(headers):
+            pdf.cell(col_w[i], 5, h, 1, 0, 'C' if i > 0 else 'L')
+        pdf.ln()
+        
+        pdf.set_font('Helvetica', '', 7)
         for _, row in df_dti_res.iterrows():
             status = "PASS" if row['Pass_Status'] else "FAIL"
-            s_class = "pass" if row['Pass_Status'] else "fail"
-            html.append('<tr>')
-            html.append(f'<td>{esc(row["Loan Type"])}</td>')
-            html.append(f'<td class="right">{row["Amount"]:,.0f}</td>')
-            html.append(f'<td class="right">{row["Obligation"]:,.0f}</td>')
-            html.append(f'<td class="right">{row["Available_Income_Snapshot"]:,.0f}</td>')
-            html.append(f'<td class="right">{row["Actual Coverage"]:.2f}x</td>')
-            html.append(f'<td class="right">{row["Required Multiplier"]:.2f}x</td>')
-            html.append(f'<td class="center {s_class}">{status}</td>')
-            html.append('</tr>')
-        html.append('</tbody></table>')
+            pdf.cell(col_w[0], 5, row['Loan Type'][:20], 1, 0, 'L')
+            pdf.cell(col_w[1], 5, f"{row['Amount']:,.0f}", 1, 0, 'R')
+            pdf.cell(col_w[2], 5, f"{row['Obligation']:,.0f}", 1, 0, 'R')
+            pdf.cell(col_w[3], 5, f"{row['Available_Income_Snapshot']:,.0f}", 1, 0, 'R')
+            pdf.cell(col_w[4], 5, f"{row['Actual Coverage']:.2f}x", 1, 0, 'R')
+            pdf.cell(col_w[5], 5, f"{row['Required Multiplier']:.2f}x", 1, 0, 'R')
+            if row['Pass_Status']:
+                pdf.set_text_color(5, 150, 105)
+            else:
+                pdf.set_text_color(220, 38, 38)
+            pdf.set_font('Helvetica', 'B', 7)
+            pdf.cell(col_w[6], 5, status, 1, 1, 'C')
+            pdf.set_font('Helvetica', '', 7)
+            pdf.set_text_color(0)
 
     # LTV Section
     if ltv_results:
-        html.append('<h2>Loan-to-Value (LTV) Analysis</h2>')
+        pdf.add_page()
+        pdf.set_font('Helvetica', 'B', 12)
+        pdf.set_text_color(0, 32, 96)
+        pdf.cell(0, 8, 'Loan-to-Value (LTV) Analysis', 0, 1)
+        pdf.ln(2)
         
         if fmv_sources:
-            html.append('<h3>Collateral & Fair Market Value Sources</h3>')
-            html.append('<table class="data-table"><thead><tr>')
-            html.append('<th style="width:30%">Property Reference</th>')
-            html.append('<th style="width:20%">Owner</th>')
-            html.append('<th style="width:15%">Type</th>')
-            html.append('<th class="right" style="width:15%">FMV (Rs.)</th>')
-            html.append('</tr></thead><tbody>')
+            pdf.set_font('Helvetica', 'B', 10)
+            pdf.set_text_color(0, 32, 96)
+            pdf.cell(0, 6, 'Collateral & Fair Market Value Sources', 0, 1)
+            pdf.ln(1)
+            pdf.set_font('Helvetica', 'B', 8)
+            pdf.set_text_color(0)
+            pdf.cell(60, 5, 'Property Reference', 1, 0)
+            pdf.cell(40, 5, 'Owner', 1, 0)
+            pdf.cell(40, 5, 'Type', 1, 0)
+            pdf.cell(50, 5, 'FMV (Rs.)', 1, 1, 'R')
+            pdf.set_font('Helvetica', '', 8)
             for src in fmv_sources:
                 ctype = "Vehicle" if src.get('IsVehicle') else "Standard"
-                html.append('<tr>')
-                html.append(f'<td>{esc(src.get("Plot", "N/A"))}</td>')
-                html.append(f'<td>{esc(src.get("Owner", "N/A"))}</td>')
-                html.append(f'<td>{ctype}</td>')
-                html.append(f'<td class="right">{src.get("Amount", 0):,.0f}</td>')
-                html.append('</tr>')
-            html.append(f'<tr class="aggregate-row"><td colspan="3" class="right">Total FMV</td><td class="right">{total_fmv:,.0f}</td></tr></tbody></table>')
+                pdf.cell(60, 5, src.get('Plot', 'N/A'), 1, 0)
+                pdf.cell(40, 5, src.get('Owner', 'N/A'), 1, 0)
+                pdf.cell(40, 5, ctype, 1, 0)
+                pdf.cell(50, 5, f"{src.get('Amount', 0):,.0f}", 1, 1, 'R')
+            pdf.set_font('Helvetica', 'B', 8)
+            pdf.cell(140, 5, 'Total FMV', 1, 0, 'R')
+            pdf.cell(50, 5, f"{total_fmv:,.0f}", 1, 1, 'R')
+            pdf.ln(4)
 
-        html.append('<h3>Facility LTV Breakdown</h3>')
-        html.append('<table class="data-table"><thead><tr>')
-        html.append('<th style="width:10%">A/C No.</th>')
-        html.append('<th style="width:20%">Facility Type</th>')
-        html.append('<th class="right" style="width:12%">Principal</th>')
-        html.append('<th class="right" style="width:12%">Total FMV</th>')
-        html.append('<th class="right" style="width:10%">LTV%</th>')
-        html.append('<th class="right" style="width:10%">Max LTV%</th>')
-        html.append('<th class="center" style="width:10%">Status</th>')
-        html.append('</tr></thead><tbody>')
+        pdf.set_font('Helvetica', 'B', 10)
+        pdf.set_text_color(0, 32, 96)
+        pdf.cell(0, 6, 'Facility LTV Breakdown', 0, 1)
+        pdf.ln(1)
         
+        col_w = [20, 40, 30, 30, 20, 20, 30]
+        headers = ["A/C No.", "Facility Type", "Principal", "Total FMV", "LTV%", "Max LTV%", "Status"]
+        pdf.set_font('Helvetica', 'B', 7)
+        pdf.set_text_color(0)
+        for i, h in enumerate(headers):
+            pdf.cell(col_w[i], 5, h, 1, 0, 'C' if i > 0 else 'L')
+        pdf.ln()
+        
+        pdf.set_font('Helvetica', '', 7)
         for row in ltv_results:
             is_unsec = row.get('Is_Unsecured', False)
             ltv_val = row.get('LTV%')
             max_ltv = row.get('Max LTV%')
             
             if is_unsec:
-                ltv_text, ltv_class = "EXEMPT", "exempt"
+                ltv_text = "EXEMPT"
                 max_disp = "N/A"
             elif row.get('No_FMV_Error'):
-                ltv_text, ltv_class = "NO FMV", "fail"
+                ltv_text = "NO FMV"
                 max_disp = f"{max_ltv:.0f}%" if max_ltv else "N/A"
             else:
                 ltv_text = f"{ltv_val:.2f}%"
-                ltv_class = "pass" if row['Pass_Status'] else "fail"
                 max_disp = f"{max_ltv:.0f}%" if max_ltv else "N/A"
                 
             status = "PASS" if row['Pass_Status'] else "FAIL"
-            s_class = "pass" if row['Pass_Status'] else "fail"
-            
-            html.append('<tr>')
-            html.append(f'<td>{esc(row.get("loan_account_id", "N/A"))}</td>')
-            html.append(f'<td>{esc(row["Loan Type"])}</td>')
-            html.append(f'<td class="right">{row["Principal"]:,.0f}</td>')
             fmv_disp = 'N/A' if is_unsec else f"{row['Total FMV']:,.0f}"
-            html.append(f'<td class="right">{fmv_disp}</td>')
-            html.append(f'<td class="right {ltv_class}">{ltv_text}</td>')
-            html.append(f'<td class="right">{max_disp}</td>')
-            html.append(f'<td class="center {s_class}">{status}</td>')
-            html.append('</tr>')
             
-        agg_status_class = 'pass' if ltv_overall_pass else 'fail'
-        agg_status_text = 'PASS' if ltv_overall_pass else 'FAIL'
-        html.append('<tr class="aggregate-row">')
-        html.append('<td colspan="2">AGGREGATE</td>')
-        html.append(f'<td class="right">{total_exposure:,.0f}</td>')
-        html.append(f'<td class="right">{total_fmv:,.0f}</td>')
-        html.append(f'<td class="right">{aggregate_ltv:.2f}%</td>')
-        html.append('<td class="right">N/A</td>')
-        html.append(f'<td class="center {agg_status_class}">{agg_status_text}</td>')
-        html.append('</tr></tbody></table>')
+            pdf.cell(col_w[0], 5, row.get('loan_account_id', 'N/A'), 1, 0, 'L')
+            pdf.cell(col_w[1], 5, row['Loan Type'][:20], 1, 0, 'L')
+            pdf.cell(col_w[2], 5, f"{row['Principal']:,.0f}", 1, 0, 'R')
+            pdf.cell(col_w[3], 5, fmv_disp, 1, 0, 'R')
+            pdf.cell(col_w[4], 5, ltv_text, 1, 0, 'R')
+            pdf.cell(col_w[5], 5, max_disp, 1, 0, 'R')
+            
+            if row['Pass_Status']:
+                pdf.set_text_color(5, 150, 105)
+            else:
+                pdf.set_text_color(220, 38, 38)
+            pdf.set_font('Helvetica', 'B', 7)
+            pdf.cell(col_w[6], 5, status, 1, 1, 'C')
+            pdf.set_font('Helvetica', '', 7)
+            pdf.set_text_color(0)
+            
+        pdf.set_font('Helvetica', 'B', 7)
+        agg_status = 'PASS' if ltv_overall_pass else 'FAIL'
+        pdf.cell(col_w[0] + col_w[1], 5, 'AGGREGATE', 1, 0, 'L')
+        pdf.cell(col_w[2], 5, f"{total_exposure:,.0f}", 1, 0, 'R')
+        pdf.cell(col_w[3], 5, f"{total_fmv:,.0f}", 1, 0, 'R')
+        pdf.cell(col_w[4], 5, f"{aggregate_ltv:.2f}%", 1, 0, 'R')
+        pdf.cell(col_w[5], 5, 'N/A', 1, 0, 'R')
+        if ltv_overall_pass:
+            pdf.set_text_color(5, 150, 105)
+        else:
+            pdf.set_text_color(220, 38, 38)
+        pdf.cell(col_w[6], 5, agg_status, 1, 1, 'C')
 
-    html.append('</body></html>')
-    return HTML(string="".join(html)).write_pdf()
+    return pdf.output()
 
 # ==========================================
 # 📐 SIDEBAR CONFIGURATION
 # ==========================================
 with st.sidebar:
-    st.markdown("## ️ Configuration Panel")
+    st.markdown("## ⚙️ Configuration Panel")
     
-    with st.expander("💰 Income & Stress Configuration (DTI)", expanded=True):
+    with st.expander(" Income & Stress Configuration (DTI)", expanded=True):
         inc_mode = st.radio("Income Entry Method", ["Single Total", "Multiple Sources"])
         gross_income = 0.0
         if inc_mode == "Single Total":
@@ -705,7 +732,7 @@ with st.sidebar:
 # ==========================================
 # 🖥️ MAIN DASHBOARD
 # ==========================================
-st.title(" Integrated DTI & LTV Analysis Engine")
+st.title("🏦 Integrated DTI & LTV Analysis Engine")
 st.markdown("Unified credit assessment for Debt-to-Income and Loan-to-Value metrics.")
 
 with st.container():
@@ -846,7 +873,7 @@ if st.session_state.loans:
     if ltv_overall_pass:
         st.markdown("<div class='status-banner status-banner-pass'>✅ LTV PORTFOLIO APPROVED</div>", unsafe_allow_html=True)
     else:
-        st.markdown("<div class='status-banner status-banner-fail'>️ LTV PORTFOLIO DECLINED</div>", unsafe_allow_html=True)
+        st.markdown("<div class='status-banner status-banner-fail'>⚠️ LTV PORTFOLIO DECLINED</div>", unsafe_allow_html=True)
         
     disp_ltv = []
     for r in ltv_results:
@@ -863,7 +890,7 @@ if st.session_state.loans:
             "ID": r.get('loan_account_id'), "Facility": r['Loan Type'], "Principal": f"Rs. {r['Principal']:,.0f}",
             "Total FMV": "N/A" if is_unsec else f"Rs. {r['Total FMV']:,.0f}",
             "LTV%": ltv_disp, "Max LTV%": "N/A" if (is_unsec or max_ltv is None) else f"{max_ltv:.0f}%",
-            "Status": "✅ PASS" if r['Pass_Status'] else " FAIL"
+            "Status": "✅ PASS" if r['Pass_Status'] else "❌ FAIL"
         })
     st.dataframe(pd.DataFrame(disp_ltv), hide_index=True, use_container_width=True)
     
@@ -876,7 +903,7 @@ if st.session_state.loans:
     with ec2:
         report_type = st.selectbox("Report Scope", ["Integrated (Both)", "DTI Only", "LTV Only"])
     with ec3:
-        if st.button(" Generate PDF", type="primary", use_container_width=True):
+        if st.button("🚀 Generate PDF", type="primary", use_container_width=True):
             if not report_name.strip():
                 st.error("Enter a client name.")
             else:
