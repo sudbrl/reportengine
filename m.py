@@ -4,6 +4,7 @@ from fpdf import FPDF
 from datetime import datetime
 import copy
 import os
+import traceback
 
 # ==========================================
 # 🔧 PAGE CONFIG — MUST BE ABSOLUTE FIRST
@@ -25,144 +26,197 @@ def _check_credentials(username: str, password: str) -> bool:
     except Exception:
         return (username == "admin" and password == "admin")
 
+
 def login_ui():
+    """Render a centered login card using Streamlit columns + targeted CSS."""
+
     st.markdown("""
     <style>
-    [data-testid="stSidebar"] { display: none !important; }
-    #MainMenu, footer, header { visibility: hidden !important; }
+    /* ── Hide chrome ─────────────────────────────────────────────── */
+    [data-testid="stSidebar"]       { display: none !important; }
+    #MainMenu, footer, header       { visibility: hidden !important; }
 
+    /* ── Full-viewport gradient background ───────────────────────── */
     .stApp {
-        background: linear-gradient(145deg, #eef2ff 0%, #f5f3ff 50%, #ede9fe 100%) !important;
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+        background: linear-gradient(145deg, #0f172a 0%, #1e1b4b 40%, #312e81 100%) !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
     }
 
-    /* Reset block container for login */
+    /* ── Remove default padding so we control layout ─────────────── */
     .block-container {
         max-width: 100% !important;
         padding: 0 !important;
         margin: 0 !important;
     }
 
-    /* Center the login card using flexbox on the main content area */
+    /* ── Vertically + horizontally centre the columns row ────────── */
     [data-testid="stAppViewContainer"] > section > div {
         display: flex !important;
-        align-items: flex-start !important;
+        align-items: center !important;
         justify-content: center !important;
         min-height: 100vh !important;
-        padding: 5vh 1rem 3rem 1rem !important;
+        padding: 2rem 1rem !important;
     }
 
-    .login-wrapper {
-        width: 100%;
-        max-width: 520px;
-        background: #ffffff;
-        border-radius: 24px;
-        overflow: hidden;
-        border: 1px solid rgba(99,102,241,0.15);
+    /* ── The three-column wrapper: kill its own padding ──────────── */
+    [data-testid="stHorizontalBlock"] {
+        padding: 0 !important;
+        gap: 0 !important;
+    }
+
+    /* ── Card styling applied to the CENTRE column ───────────────── */
+    [data-testid="stHorizontalBlock"] > div:nth-child(2) > div {
+        background: #ffffff !important;
+        border-radius: 20px !important;
+        border: 1px solid rgba(99, 102, 241, 0.12) !important;
         box-shadow:
-            0 4px 6px rgba(0,0,0,0.02),
-            0 12px 40px rgba(99,102,241,0.12),
-            0 32px 64px rgba(99,102,241,0.08);
-        margin: 0 auto;
+            0 4px 6px rgba(0, 0, 0, 0.03),
+            0 20px 60px rgba(0, 0, 0, 0.25),
+            0 0 0 1px rgba(255, 255, 255, 0.05) inset !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        max-width: 460px !important;
+        margin: 0 auto !important;
     }
 
-    .lp-header {
+    /* ── Header banner inside the card ───────────────────────────── */
+    .login-header {
         background: linear-gradient(135deg, #4338ca 0%, #6d28d9 55%, #7c3aed 100%);
-        padding: 3.5rem 2.5rem 3rem;
+        padding: 2.8rem 2rem 2.2rem;
         text-align: center;
         position: relative;
         overflow: hidden;
     }
-    .lp-header::before {
+    .login-header::before {
         content: '';
-        position: absolute; top: -40%; left: -30%;
-        width: 160%; height: 160%;
-        background: radial-gradient(ellipse, rgba(255,255,255,0.12) 0%, transparent 65%);
+        position: absolute;
+        top: -50%; left: -30%;
+        width: 160%; height: 200%;
+        background: radial-gradient(ellipse, rgba(255,255,255,0.10) 0%, transparent 60%);
         pointer-events: none;
     }
-    .lp-logo { font-size: 3.5rem; display: block; margin-bottom: 1rem; position: relative; z-index: 1; }
-    .lp-app-name {
-        font-size: 1.85rem; font-weight: 800; color: #ffffff;
-        letter-spacing: -0.04em; margin-bottom: 0.5rem;
-        position: relative; z-index: 1;
+    .login-header .logo-icon {
+        font-size: 3rem;
+        display: block;
+        margin-bottom: 0.8rem;
+        position: relative;
+        z-index: 1;
     }
-    .lp-app-tagline {
-        font-size: 0.85rem; color: rgba(255,255,255,0.75);
-        font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em;
-        position: relative; z-index: 1;
+    .login-header .app-title {
+        font-size: 1.55rem;
+        font-weight: 800;
+        color: #ffffff;
+        letter-spacing: -0.03em;
+        margin-bottom: 0.35rem;
+        position: relative;
+        z-index: 1;
+    }
+    .login-header .app-sub {
+        font-size: 0.78rem;
+        color: rgba(255,255,255,0.72);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        position: relative;
+        z-index: 1;
     }
 
-    .login-body { padding: 2.5rem; }
-    .lp-welcome-title {
-        font-size: 1.35rem; font-weight: 700; color: #1e1b4b;
-        margin-bottom: 0.5rem;
+    /* ── Body area ───────────────────────────────────────────────── */
+    .login-body-area {
+        padding: 2rem 2.2rem 2.4rem;
     }
-    .lp-welcome-sub {
-        font-size: 0.95rem; color: #64748b;
-        line-height: 1.5; margin-bottom: 1.5rem;
+    .login-body-area .welcome-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1e1b4b;
+        margin-bottom: 0.3rem;
     }
-    .lp-field-label {
-        display: block; font-size: 0.82rem; font-weight: 600;
-        color: #374151; margin-bottom: 0.4rem; margin-top: 1.2rem;
+    .login-body-area .welcome-sub {
+        font-size: 0.88rem;
+        color: #64748b;
+        line-height: 1.55;
+        margin-bottom: 1.4rem;
+    }
+    .field-label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 0.35rem;
+        margin-top: 1.1rem;
     }
 
-    /* Input field overrides */
-    div[data-testid="stTextInput"] label { display: none !important; }
-    div[data-testid="stTextInput"] > div { background: transparent !important; }
+    /* ── Input overrides (scoped to login) ───────────────────────── */
     div[data-testid="stTextInput"] > div > div {
         background: #f9fafb !important;
         border: 1.5px solid #e5e7eb !important;
-        border-radius: 12px !important;
+        border-radius: 10px !important;
         transition: all 0.2s ease;
     }
     div[data-testid="stTextInput"] > div > div:focus-within {
         border-color: #7c3aed !important;
         background: #ffffff !important;
-        box-shadow: 0 0 0 4px rgba(124,58,237,0.1) !important;
+        box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.10) !important;
     }
     div[data-testid="stTextInput"] > div > div > input {
         background: transparent !important;
         border: none !important;
         color: #111827 !important;
-        font-size: 1rem !important;
-        font-family: 'Inter', sans-serif !important;
-        padding: 0.85rem 1rem !important;
+        font-size: 0.95rem !important;
+        padding: 0.75rem 0.9rem !important;
     }
-    div[data-testid="stTextInput"] > div > div > input::placeholder { color: #9ca3af !important; }
+    div[data-testid="stTextInput"] > div > div > input::placeholder {
+        color: #9ca3af !important;
+    }
+    div[data-testid="stTextInput"] label {
+        display: none !important;
+    }
 
-    /* Sign-in button */
+    /* ── Sign-in button ──────────────────────────────────────────── */
     div.stButton > button {
         width: 100% !important;
         background: linear-gradient(135deg, #4338ca 0%, #7c3aed 100%) !important;
         color: #ffffff !important;
         border: none !important;
-        border-radius: 12px !important;
+        border-radius: 10px !important;
         font-weight: 700 !important;
-        font-size: 1.05rem !important;
-        padding: 0.9rem 1.5rem !important;
-        margin-top: 1.8rem !important;
-        letter-spacing: 0.025em !important;
+        font-size: 1rem !important;
+        padding: 0.8rem 1.5rem !important;
+        margin-top: 1.6rem !important;
+        letter-spacing: 0.02em !important;
         transition: all 0.2s ease !important;
-        box-shadow: 0 4px 14px rgba(124,58,237,0.3) !important;
+        box-shadow: 0 4px 14px rgba(124, 58, 237, 0.30) !important;
     }
     div.stButton > button:hover {
         transform: translateY(-1px) !important;
-        box-shadow: 0 8px 24px rgba(124,58,237,0.4) !important;
+        box-shadow: 0 8px 24px rgba(124, 58, 237, 0.40) !important;
     }
-    div.stButton > button:active { transform: translateY(0) !important; }
+    div.stButton > button:active {
+        transform: translateY(0) !important;
+    }
 
-    .lp-error {
+    /* ── Error alert ─────────────────────────────────────────────── */
+    .login-error-box {
         background: #fef2f2;
         border: 1px solid #fecaca;
-        border-radius: 10px;
-        padding: 0.8rem 1rem;
+        border-radius: 8px;
+        padding: 0.7rem 0.9rem;
         margin-top: 1rem;
-        font-size: 0.85rem;
+        font-size: 0.82rem;
         color: #b91c1c;
         font-weight: 500;
         display: flex;
         gap: 0.5rem;
         align-items: flex-start;
+    }
+
+    /* ── Footer note ─────────────────────────────────────────────── */
+    .login-footer {
+        text-align: center;
+        padding: 1rem 2rem 1.4rem;
+        font-size: 0.72rem;
+        color: #94a3b8;
+        border-top: 1px solid #f1f5f9;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -170,51 +224,66 @@ def login_ui():
     if "_login_error" not in st.session_state:
         st.session_state["_login_error"] = ""
 
-    # Single centered container — no columns needed
-    st.markdown('<div class="login-wrapper">', unsafe_allow_html=True)
+    # ── Three-column layout: spacer | card | spacer ─────────────────
+    _spacer_l, col_card, _spacer_r = st.columns([1, 2.2, 1])
 
-    st.markdown("""
-        <div class="lp-header">
-            <span class="lp-logo">📊</span>
-            <div class="lp-app-name">Integrated Analysis Engine</div>
-            <div class="lp-app-tagline">DTI &amp; LTV Credit Assessment Platform</div>
+    with col_card:
+        # ── Header banner ───────────────────────────────────────────
+        st.markdown("""
+        <div class="login-header">
+            <span class="logo-icon">🏦</span>
+            <div class="app-title">Integrated Analysis Engine</div>
+            <div class="app-sub">DTI &amp; LTV Credit Assessment Platform</div>
         </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
-    st.markdown('<div class="login-body">', unsafe_allow_html=True)
-    st.markdown('<div class="lp-welcome-title">Welcome Back</div>', unsafe_allow_html=True)
-    st.markdown(
-        '<div class="lp-welcome-sub">Sign in with your institutional credentials '
-        'to access the integrated analysis platform.</div>',
-        unsafe_allow_html=True
-    )
+        # ── Body ────────────────────────────────────────────────────
+        st.markdown("""
+        <div class="login-body-area">
+            <div class="welcome-title">Welcome Back</div>
+            <div class="welcome-sub">
+                Sign in with your institutional credentials to access
+                the integrated credit analysis platform.
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
-    st.markdown('<span class="lp-field-label">Username</span>', unsafe_allow_html=True)
-    username = st.text_input(
-        label="u", placeholder="Enter your username",
-        key="_login_u", label_visibility="collapsed",
-        autocomplete="username"
-    )
+        st.markdown('<span class="field-label">Username</span>', unsafe_allow_html=True)
+        username = st.text_input(
+            label="username",
+            placeholder="Enter your username",
+            key="_login_u",
+            label_visibility="collapsed",
+            autocomplete="username"
+        )
 
-    st.markdown('<span class="lp-field-label">Password</span>', unsafe_allow_html=True)
-    password = st.text_input(
-        label="p", placeholder="Enter your password",
-        type="password", key="_login_p",
-        label_visibility="collapsed", autocomplete="current-password"
-    )
+        st.markdown('<span class="field-label">Password</span>', unsafe_allow_html=True)
+        password = st.text_input(
+            label="password",
+            placeholder="Enter your password",
+            type="password",
+            key="_login_p",
+            label_visibility="collapsed",
+            autocomplete="current-password"
+        )
 
-    clicked = st.button("Sign In →", key="_login_btn", use_container_width=True)
+        clicked = st.button("Sign In →", key="_login_btn", use_container_width=True)
 
-    err = st.session_state.get("_login_error", "")
-    if err:
+        err = st.session_state.get("_login_error", "")
+        if err:
+            st.markdown(
+                f'<div class="login-error-box"><span>⚠️</span><span>{err}</span></div>',
+                unsafe_allow_html=True
+            )
+
         st.markdown(
-            f'<div class="lp-error"><span>⚠</span><span>{err}</span></div>',
+            '<div class="login-footer">'
+            'Secured connection · Institutional use only · v2.4.1'
+            '</div>',
             unsafe_allow_html=True
         )
 
-    st.markdown('</div>', unsafe_allow_html=True)  # close login-body
-    st.markdown('</div>', unsafe_allow_html=True)  # close login-wrapper
-
+    # ── Credential validation (unchanged logic) ─────────────────────
     if clicked:
         u = str(username).strip()
         p = str(password).strip()
@@ -372,7 +441,7 @@ div.stButton > button[kind="primary"]:hover {
 """, unsafe_allow_html=True)
 
 # ==========================================
-# 📋 POLICY DATA & CONFIGURATIONS
+# 📋 POLICY DATA & CONFIGURATIONS  (UNCHANGED)
 # ==========================================
 LOAN_CONFIG = {
     "Personal Term Loan (PTL)": 2.0, "Personal OD": 2.0, "Share Loan": 2.0,
@@ -422,7 +491,7 @@ PROFESSIONAL_TL_CAP       = 1_500_000.0
 PROFESSIONAL_COMBINED_CAP = 1_500_000.0
 
 # ==========================================
-# 🏠 APP STATE INITIALIZATION
+# 🏠 APP STATE INITIALIZATION  (UNCHANGED)
 # ==========================================
 def init_state():
     defaults = {
@@ -437,7 +506,7 @@ def init_state():
 init_state()
 
 # ==========================================
-# 🧮 HELPER & LTV ENGINE FUNCTIONS
+# 🧮 HELPER & LTV ENGINE FUNCTIONS  (UNCHANGED)
 # ==========================================
 def get_policy_dict():
     return {
@@ -613,7 +682,7 @@ def run_portfolio_ltv(loans, fmv_sources):
     }
 
 # ==========================================
-# 🧮 DTI ENGINE
+# 🧮 DTI ENGINE  (UNCHANGED)
 # ==========================================
 def calculate_obligation(loan_type, principal, rate, tenure):
     if principal <= 0 or rate <= 0:
@@ -665,20 +734,35 @@ def run_waterfall_allocation(df, total_income):
     return df_sorted
 
 # ==========================================
-# 📄 PDF ENGINE  (fpdf2-compatible)
+# 📄 PDF ENGINE  (CORRECTED — fpdf2-safe)
 # ==========================================
 class IntegratedPDFReport(FPDF):
+    """Professional multi-section credit analysis report."""
+
+    # Colours
+    NAVY   = (0, 32, 96)
+    GREEN  = (5, 150, 105)
+    RED    = (220, 38, 38)
+    GREY   = (100, 100, 100)
+    BLACK  = (0, 0, 0)
+    WHITE  = (255, 255, 255)
+
+    def __init__(self, client_name="", date_str="", **kwargs):
+        super().__init__(**kwargs)
+        self.client_name = client_name
+        self.date_str    = date_str
+
     def header(self):
         self.set_font('Helvetica', 'B', 16)
-        self.set_text_color(0, 32, 96)
+        self.set_text_color(*self.NAVY)
         self.cell(0, 10, 'Integrated Credit Analysis Report', 0, 1, 'C')
         self.ln(2)
         self.set_font('Helvetica', '', 10)
-        self.set_text_color(100)
+        self.set_text_color(*self.GREY)
         self.cell(95, 5, f"Client: {self.client_name}", 0, 0, 'L')
         self.cell(0,  5, f"Date: {self.date_str}",      0, 1, 'R')
         self.ln(4)
-        self.set_draw_color(0, 32, 96)
+        self.set_draw_color(*self.NAVY)
         self.set_line_width(0.5)
         self.line(10, self.get_y(), 200, self.get_y())
         self.ln(6)
@@ -686,8 +770,51 @@ class IntegratedPDFReport(FPDF):
     def footer(self):
         self.set_y(-15)
         self.set_font('Helvetica', 'I', 8)
-        self.set_text_color(128)
+        self.set_text_color(*self.GREY)
         self.cell(0, 10, f'Page {self.page_no()}/{{nb}}', 0, 0, 'C')
+
+    # ── Convenience helpers ─────────────────────────────────────────
+    def section_title(self, title: str):
+        self.set_font('Helvetica', 'B', 12)
+        self.set_text_color(*self.NAVY)
+        self.cell(0, 8, title, 0, 1)
+        self.ln(2)
+
+    def sub_title(self, title: str):
+        self.set_font('Helvetica', 'B', 10)
+        self.set_text_color(*self.NAVY)
+        self.cell(0, 6, title, 0, 1)
+        self.ln(1)
+
+    def kv_row(self, left_label, left_val, right_label, right_val):
+        self.set_font('Helvetica', '', 9)
+        self.set_text_color(*self.BLACK)
+        self.cell(95, 5, f"{left_label}: {left_val}", 0, 0)
+        self.cell(0,  5, f"{right_label}: {right_val}", 0, 1)
+
+    def table_header(self, widths, headers):
+        self.set_font('Helvetica', 'B', 7)
+        self.set_text_color(*self.BLACK)
+        self.set_fill_color(235, 238, 245)
+        for i, h in enumerate(headers):
+            self.cell(widths[i], 6, h, 1, 0,
+                      'C' if i > 0 else 'L', fill=True)
+        self.ln()
+
+    def table_row(self, widths, values, aligns=None, bold=False,
+                  color=None, fill=False):
+        if aligns is None:
+            aligns = ['L'] + ['R'] * (len(values) - 1)
+        self.set_font('Helvetica', 'B' if bold else '', 7)
+        if color:
+            self.set_text_color(*color)
+        else:
+            self.set_text_color(*self.BLACK)
+        if fill:
+            self.set_fill_color(248, 249, 252)
+        for i, v in enumerate(values):
+            self.cell(widths[i], 5, str(v), 1, 0, aligns[i], fill=fill)
+        self.ln()
 
 
 def _safe_pdf_bytes(pdf: FPDF) -> bytes:
@@ -695,23 +822,38 @@ def _safe_pdf_bytes(pdf: FPDF) -> bytes:
     Return PDF content as bytes regardless of fpdf / fpdf2 version.
 
     fpdf2  (>= 2.x) : pdf.output() returns bytes directly.
-    fpdf   (1.x)    : pdf.output(dest='S') returns a Latin-1 str that must
-                      be encoded to bytes.
+    fpdf   (1.x)    : pdf.output(dest='S') returns a Latin-1 str.
     """
-    result = pdf.output()
+    try:
+        # fpdf2 ≥ 2.7 prefers no-arg; older fpdf2 accepts dest='S'
+        result = pdf.output()
+    except TypeError:
+        result = pdf.output(dest='S')
+
     if isinstance(result, (bytes, bytearray)):
         return bytes(result)
-    # Legacy string output
-    return result.encode('latin-1')
+    # Legacy fpdf 1.x returns a Latin-1 string
+    if isinstance(result, str):
+        return result.encode('latin-1')
+    # Last resort
+    return bytes(result)
 
 
 def generate_integrated_pdf(client_name: str, report_data: dict) -> bytes:
-    pdf = IntegratedPDFReport()
-    pdf.alias_nb_pages()
-    pdf.client_name = client_name
-    pdf.date_str    = datetime.now().strftime("%B %d, %Y")
+    """Build the full PDF report and return raw bytes."""
 
-    # ── Unpack payload ────────────────────────────────────────────────
+    date_str = datetime.now().strftime("%B %d, %Y")
+    pdf = IntegratedPDFReport(
+        client_name=client_name,
+        date_str=date_str,
+        orientation='P',
+        unit='mm',
+        format='A4'
+    )
+    pdf.alias_nb_pages()
+    pdf.set_auto_page_break(auto=True, margin=20)
+
+    # ── Unpack payload ──────────────────────────────────────────────
     gross_income     = report_data.get('gross_income', 0)
     eff_income       = report_data.get('eff_income', 0)
     scenario_name    = report_data.get('scenario_name', 'Baseline')
@@ -733,163 +875,127 @@ def generate_integrated_pdf(client_name: str, report_data: dict) -> bytes:
 
     overall_pass = dti_overall_pass and ltv_overall_pass
 
-    # ── Page 1 – Executive Summary ────────────────────────────────────
+    # ═══════════════════════════════════════════════════════════════
+    # PAGE 1 — Executive Summary
+    # ═══════════════════════════════════════════════════════════════
     pdf.add_page()
+    pdf.section_title('Executive Summary')
 
-    pdf.set_font('Helvetica', 'B', 12)
-    pdf.set_text_color(0, 32, 96)
-    pdf.cell(0, 8, 'Executive Summary', 0, 1)
-    pdf.ln(2)
-
-    pdf.set_font('Helvetica', 'B', 10)
+    # Assessment banner
+    pdf.set_font('Helvetica', 'B', 11)
     if overall_pass:
-        pdf.set_text_color(6, 95, 70)
-        pdf.cell(0, 6, 'OVERALL ASSESSMENT: APPROVED', 0, 1)
+        pdf.set_text_color(*pdf.GREEN)
+        pdf.cell(0, 7, 'OVERALL ASSESSMENT:  APPROVED', 0, 1)
     else:
-        pdf.set_text_color(153, 27, 27)
-        pdf.cell(0, 6, 'OVERALL ASSESSMENT: DECLINED', 0, 1)
+        pdf.set_text_color(*pdf.RED)
+        pdf.cell(0, 7, 'OVERALL ASSESSMENT:  DECLINED', 0, 1)
+    pdf.ln(3)
+
+    pdf.kv_row("Monthly Gross Income", f"Rs. {gross_income:,.2f}",
+               "Total Loan Exposure",  f"Rs. {total_exposure:,.2f}")
+
+    inc_label = ("Effective Income (Post-Stress)" if enable_stress
+                 else "Effective Income (Baseline)")
+    pdf.kv_row(inc_label, f"Rs. {eff_income:,.2f}",
+               "Total Collateral FMV", f"Rs. {total_fmv:,.2f}")
+
+    pdf.kv_row("Aggregate DTI Coverage", f"{dti_agg_dti:.2f}x",
+               "Aggregate LTV%",         f"{aggregate_ltv:.2f}%")
+
     pdf.ln(2)
-
-    pdf.set_font('Helvetica', '', 9)
-    pdf.set_text_color(0)
-    pdf.cell(95, 5, f"Monthly Gross Income: Rs. {gross_income:,.2f}", 0, 0)
-    pdf.cell(0,  5, f"Total Loan Exposure: Rs. {total_exposure:,.2f}",  0, 1)
-
-    inc_label = "Effective Income (Post-Stress):" if enable_stress else "Effective Income (Baseline):"
-    pdf.cell(95, 5, f"{inc_label} Rs. {eff_income:,.2f}", 0, 0)
-    pdf.cell(0,  5, f"Total Collateral FMV: Rs. {total_fmv:,.2f}",     0, 1)
-
-    pdf.cell(95, 5, f"Aggregate DTI Coverage: {dti_agg_dti:.2f}x", 0, 0)
-    pdf.cell(0,  5, f"Aggregate LTV%: {aggregate_ltv:.2f}%",         0, 1)
-
     pdf.set_font('Helvetica', 'B', 9)
-    if dti_overall_pass:
-        pdf.set_text_color(5, 150, 105)
-    else:
-        pdf.set_text_color(220, 38, 38)
     dti_status = 'PASS' if dti_overall_pass else 'FAIL'
-    pdf.cell(95, 5, f"DTI Income Shortfall: Rs. {dti_shortfall:,.2f}", 0, 0)
-    pdf.cell(0,  5, f"DTI Status: {dti_status}",                        0, 1)
+    ltv_status = 'PASS' if ltv_overall_pass else 'FAIL'
+    dti_col = pdf.GREEN if dti_overall_pass else pdf.RED
+    ltv_col = pdf.GREEN if ltv_overall_pass else pdf.RED
+
+    pdf.set_text_color(*dti_col)
+    pdf.cell(95, 5, f"DTI Status: {dti_status}  |  Shortfall: Rs. {dti_shortfall:,.2f}", 0, 0)
+    pdf.set_text_color(*ltv_col)
+    pdf.cell(0, 5, f"LTV Status: {ltv_status}", 0, 1)
     pdf.ln(4)
 
-    # ── DTI Section ────────────────────────────────────────────────────
+    # ═══════════════════════════════════════════════════════════════
+    # PAGE 2 — DTI Analysis
+    # ═══════════════════════════════════════════════════════════════
     if df_dti_res is not None and not df_dti_res.empty:
         pdf.add_page()
-        pdf.set_font('Helvetica', 'B', 12)
-        pdf.set_text_color(0, 32, 96)
-        pdf.cell(0, 8, 'Debt-to-Income (DTI) Analysis', 0, 1)
-        pdf.ln(2)
+        pdf.section_title('Debt-to-Income (DTI) Analysis')
 
         pdf.set_font('Helvetica', '', 9)
-        pdf.set_text_color(0)
+        pdf.set_text_color(*pdf.BLACK)
         pdf.cell(0, 5, f"Active Scenario: {scenario_name}", 0, 1)
         if enable_stress:
             pdf.cell(0, 5,
-                f"Interest Rate Shock: +{stress_rate:.2f}%  |  "
-                f"Income Reduction: -{stress_inc:.2f}%", 0, 1)
+                     f"Interest Rate Shock: +{stress_rate:.2f}%  |  "
+                     f"Income Reduction: -{stress_inc:.2f}%", 0, 1)
         pdf.ln(2)
 
-        # Income sources table
+        # Income sources
         if income_sources:
-            pdf.set_font('Helvetica', 'B', 10)
-            pdf.set_text_color(0, 32, 96)
-            pdf.cell(0, 6, 'Income Sources', 0, 1)
-            pdf.ln(1)
-            pdf.set_font('Helvetica', 'B', 8)
-            pdf.set_text_color(0)
-            pdf.cell(120, 5, 'Source',       1, 0)
-            pdf.cell(70,  5, 'Amount (Rs.)', 1, 1, 'R')
-            pdf.set_font('Helvetica', '', 8)
+            pdf.sub_title('Income Sources')
+            w = [120, 70]
+            pdf.table_header(w, ['Source', 'Amount (Rs.)'])
             for src in income_sources:
-                pdf.cell(120, 5, src['Source'],             1, 0)
-                pdf.cell(70,  5, f"{src['Amount']:,.2f}",   1, 1, 'R')
-            pdf.set_font('Helvetica', 'B', 8)
-            pdf.cell(120, 5, 'Total',              1, 0)
-            pdf.cell(70,  5, f"{gross_income:,.2f}", 1, 1, 'R')
+                pdf.table_row(w, [src['Source'], f"{src['Amount']:,.2f}"])
+            pdf.table_row(w, ['Total', f"{gross_income:,.2f}"], bold=True)
             pdf.ln(4)
 
         # Waterfall table
-        pdf.set_font('Helvetica', 'B', 10)
-        pdf.set_text_color(0, 32, 96)
-        pdf.cell(0, 6, 'Priority Allocation Breakdown', 0, 1)
-        pdf.ln(1)
-
+        pdf.sub_title('Priority Allocation Breakdown')
         col_w   = [45, 25, 25, 25, 25, 25, 20]
         headers = ["Facility Type", "Principal", "Payment",
                    "Rem. Income", "Act. Cov.", "Req. Cov.", "Status"]
-        pdf.set_font('Helvetica', 'B', 7)
-        pdf.set_text_color(0)
-        for i, h in enumerate(headers):
-            pdf.cell(col_w[i], 5, h, 1, 0, 'C' if i > 0 else 'L')
-        pdf.ln()
+        pdf.table_header(col_w, headers)
 
-        pdf.set_font('Helvetica', '', 7)
-        for _, row in df_dti_res.iterrows():
+        for row_idx, (_, row) in enumerate(df_dti_res.iterrows()):
             status = "PASS" if row['Pass_Status'] else "FAIL"
-            pdf.set_text_color(0)
+            row_color = pdf.GREEN if row['Pass_Status'] else pdf.RED
+            fill = (row_idx % 2 == 1)
             pdf.set_font('Helvetica', '', 7)
-            pdf.cell(col_w[0], 5, str(row['Loan Type'])[:20],              1, 0, 'L')
-            pdf.cell(col_w[1], 5, f"{row['Amount']:,.0f}",                 1, 0, 'R')
-            pdf.cell(col_w[2], 5, f"{row['Obligation']:,.0f}",             1, 0, 'R')
-            pdf.cell(col_w[3], 5, f"{row['Available_Income_Snapshot']:,.0f}", 1, 0, 'R')
-            pdf.cell(col_w[4], 5, f"{row['Actual Coverage']:.2f}x",        1, 0, 'R')
-            pdf.cell(col_w[5], 5, f"{row['Required Multiplier']:.2f}x",    1, 0, 'R')
-            if row['Pass_Status']:
-                pdf.set_text_color(5, 150, 105)
-            else:
-                pdf.set_text_color(220, 38, 38)
+            pdf.set_text_color(*pdf.BLACK)
+            pdf.set_fill_color(248, 249, 252) if fill else None
+            pdf.cell(col_w[0], 5, str(row['Loan Type'])[:22], 1, 0, 'L', fill=fill)
+            pdf.cell(col_w[1], 5, f"{row['Amount']:,.0f}", 1, 0, 'R', fill=fill)
+            pdf.cell(col_w[2], 5, f"{row['Obligation']:,.0f}", 1, 0, 'R', fill=fill)
+            pdf.cell(col_w[3], 5, f"{row['Available_Income_Snapshot']:,.0f}", 1, 0, 'R', fill=fill)
+            pdf.cell(col_w[4], 5, f"{row['Actual Coverage']:.2f}x", 1, 0, 'R', fill=fill)
+            pdf.cell(col_w[5], 5, f"{row['Required Multiplier']:.2f}x", 1, 0, 'R', fill=fill)
             pdf.set_font('Helvetica', 'B', 7)
-            pdf.cell(col_w[6], 5, status, 1, 1, 'C')
+            pdf.set_text_color(*row_color)
+            pdf.cell(col_w[6], 5, status, 1, 1, 'C', fill=fill)
 
-    # ── LTV Section ────────────────────────────────────────────────────
+    # ═══════════════════════════════════════════════════════════════
+    # PAGE 3 — LTV Analysis
+    # ═══════════════════════════════════════════════════════════════
     if ltv_results:
         pdf.add_page()
-        pdf.set_font('Helvetica', 'B', 12)
-        pdf.set_text_color(0, 32, 96)
-        pdf.cell(0, 8, 'Loan-to-Value (LTV) Analysis', 0, 1)
-        pdf.ln(2)
+        pdf.section_title('Loan-to-Value (LTV) Analysis')
 
-        # Collateral sources table
+        # Collateral table
         if fmv_sources:
-            pdf.set_font('Helvetica', 'B', 10)
-            pdf.set_text_color(0, 32, 96)
-            pdf.cell(0, 6, 'Collateral & Fair Market Value Sources', 0, 1)
-            pdf.ln(1)
-            pdf.set_font('Helvetica', 'B', 8)
-            pdf.set_text_color(0)
-            pdf.cell(60, 5, 'Property Reference', 1, 0)
-            pdf.cell(40, 5, 'Owner',              1, 0)
-            pdf.cell(40, 5, 'Type',               1, 0)
-            pdf.cell(50, 5, 'FMV (Rs.)',          1, 1, 'R')
-            pdf.set_font('Helvetica', '', 8)
+            pdf.sub_title('Collateral & Fair Market Value Sources')
+            cw = [60, 40, 40, 50]
+            pdf.table_header(cw, ['Property Ref.', 'Owner', 'Type', 'FMV (Rs.)'])
             for src in fmv_sources:
-                ctype = "Vehicle" if src.get('IsVehicle') else "Standard"
-                pdf.cell(60, 5, src.get('Plot',   'N/A'), 1, 0)
-                pdf.cell(40, 5, src.get('Owner',  'N/A'), 1, 0)
-                pdf.cell(40, 5, ctype,                     1, 0)
-                pdf.cell(50, 5, f"{src.get('Amount', 0):,.0f}", 1, 1, 'R')
-            pdf.set_font('Helvetica', 'B', 8)
-            pdf.cell(140, 5, 'Total FMV',           1, 0, 'R')
-            pdf.cell(50,  5, f"{total_fmv:,.0f}",   1, 1, 'R')
+                ctype = "Vehicle" if src.get('IsVehicle') else "Property"
+                pdf.table_row(cw, [
+                    src.get('Plot', 'N/A'),
+                    src.get('Owner', 'N/A'),
+                    ctype,
+                    f"{src.get('Amount', 0):,.0f}"
+                ])
+            pdf.table_row(cw, ['', '', 'Total FMV', f"{total_fmv:,.0f}"], bold=True)
             pdf.ln(4)
 
-        # LTV facility table
-        pdf.set_font('Helvetica', 'B', 10)
-        pdf.set_text_color(0, 32, 96)
-        pdf.cell(0, 6, 'Facility LTV Breakdown', 0, 1)
-        pdf.ln(1)
-
+        # Facility LTV table
+        pdf.sub_title('Facility LTV Breakdown')
         col_w   = [20, 40, 30, 30, 20, 20, 30]
         headers = ["A/C No.", "Facility Type", "Principal",
                    "Total FMV", "LTV%", "Max LTV%", "Status"]
-        pdf.set_font('Helvetica', 'B', 7)
-        pdf.set_text_color(0)
-        for i, h in enumerate(headers):
-            pdf.cell(col_w[i], 5, h, 1, 0, 'C' if i > 0 else 'L')
-        pdf.ln()
+        pdf.table_header(col_w, headers)
 
-        pdf.set_font('Helvetica', '', 7)
-        for row in ltv_results:
+        for row_idx, row in enumerate(ltv_results):
             is_unsec = row.get('Is_Unsecured', False)
             ltv_val  = row.get('LTV%')
             max_ltv  = row.get('Max LTV%')
@@ -906,42 +1012,43 @@ def generate_integrated_pdf(client_name: str, report_data: dict) -> bytes:
 
             status   = "PASS" if row['Pass_Status'] else "FAIL"
             fmv_disp = 'N/A' if is_unsec else f"{row['Total FMV']:,.0f}"
+            row_color = pdf.GREEN if row['Pass_Status'] else pdf.RED
+            fill = (row_idx % 2 == 1)
 
-            pdf.set_text_color(0)
             pdf.set_font('Helvetica', '', 7)
-            pdf.cell(col_w[0], 5, row.get('loan_account_id', 'N/A'), 1, 0, 'L')
-            pdf.cell(col_w[1], 5, str(row['Loan Type'])[:20],         1, 0, 'L')
-            pdf.cell(col_w[2], 5, f"{row['Principal']:,.0f}",          1, 0, 'R')
-            pdf.cell(col_w[3], 5, fmv_disp,                            1, 0, 'R')
-            pdf.cell(col_w[4], 5, ltv_text,                            1, 0, 'R')
-            pdf.cell(col_w[5], 5, max_disp,                            1, 0, 'R')
-            if row['Pass_Status']:
-                pdf.set_text_color(5, 150, 105)
-            else:
-                pdf.set_text_color(220, 38, 38)
+            pdf.set_text_color(*pdf.BLACK)
+            if fill:
+                pdf.set_fill_color(248, 249, 252)
+            pdf.cell(col_w[0], 5, row.get('loan_account_id', 'N/A'), 1, 0, 'L', fill=fill)
+            pdf.cell(col_w[1], 5, str(row['Loan Type'])[:22], 1, 0, 'L', fill=fill)
+            pdf.cell(col_w[2], 5, f"{row['Principal']:,.0f}", 1, 0, 'R', fill=fill)
+            pdf.cell(col_w[3], 5, fmv_disp, 1, 0, 'R', fill=fill)
+            pdf.cell(col_w[4], 5, ltv_text, 1, 0, 'R', fill=fill)
+            pdf.cell(col_w[5], 5, max_disp, 1, 0, 'R', fill=fill)
             pdf.set_font('Helvetica', 'B', 7)
-            pdf.cell(col_w[6], 5, status, 1, 1, 'C')
+            pdf.set_text_color(*row_color)
+            pdf.cell(col_w[6], 5, status, 1, 1, 'C', fill=fill)
 
         # Aggregate row
-        pdf.set_text_color(0)
-        pdf.set_font('Helvetica', 'B', 7)
         agg_status = 'PASS' if ltv_overall_pass else 'FAIL'
-        pdf.cell(col_w[0] + col_w[1], 5, 'AGGREGATE',            1, 0, 'L')
-        pdf.cell(col_w[2], 5, f"{total_exposure:,.0f}",            1, 0, 'R')
-        pdf.cell(col_w[3], 5, f"{total_fmv:,.0f}",                 1, 0, 'R')
-        pdf.cell(col_w[4], 5, f"{aggregate_ltv:.2f}%",             1, 0, 'R')
-        pdf.cell(col_w[5], 5, 'N/A',                               1, 0, 'R')
-        if ltv_overall_pass:
-            pdf.set_text_color(5, 150, 105)
-        else:
-            pdf.set_text_color(220, 38, 38)
-        pdf.cell(col_w[6], 5, agg_status, 1, 1, 'C')
+        agg_color  = pdf.GREEN if ltv_overall_pass else pdf.RED
+        pdf.set_font('Helvetica', 'B', 7)
+        pdf.set_text_color(*pdf.BLACK)
+        pdf.set_fill_color(235, 238, 245)
+        pdf.cell(col_w[0] + col_w[1], 6, 'AGGREGATE', 1, 0, 'L', fill=True)
+        pdf.cell(col_w[2], 6, f"{total_exposure:,.0f}", 1, 0, 'R', fill=True)
+        pdf.cell(col_w[3], 6, f"{total_fmv:,.0f}", 1, 0, 'R', fill=True)
+        pdf.cell(col_w[4], 6, f"{aggregate_ltv:.2f}%", 1, 0, 'R', fill=True)
+        pdf.cell(col_w[5], 6, 'N/A', 1, 0, 'R', fill=True)
+        pdf.set_text_color(*agg_color)
+        pdf.cell(col_w[6], 6, agg_status, 1, 1, 'C', fill=True)
 
-    # ── Return bytes ───────────────────────────────────────────────────
+    # ── Return bytes ────────────────────────────────────────────────
     return _safe_pdf_bytes(pdf)
 
+
 # ==========================================
-# 📐 SIDEBAR CONFIGURATION
+# 📐 SIDEBAR CONFIGURATION  (UNCHANGED LOGIC)
 # ==========================================
 with st.sidebar:
     st.markdown("## ⚙️ Configuration Panel")
@@ -1054,7 +1161,7 @@ with st.sidebar:
         st.rerun()
 
 # ==========================================
-# 🖥️ MAIN DASHBOARD
+# 🖥️ MAIN DASHBOARD  (UNCHANGED LOGIC)
 # ==========================================
 st.title("🏦 Integrated DTI & LTV Analysis Engine")
 st.markdown("Unified credit assessment for Debt-to-Income and Loan-to-Value metrics.")
@@ -1143,7 +1250,7 @@ with st.container():
     st.markdown("</div>", unsafe_allow_html=True)
 
 # ==========================================
-# 📊 ANALYSIS & RESULTS
+# 📊 ANALYSIS & RESULTS  (UNCHANGED LOGIC)
 # ==========================================
 if st.session_state.loans:
     # Effective income after stress
@@ -1360,8 +1467,8 @@ if st.session_state.loans:
                     }
                     try:
                         pdf_bytes = generate_integrated_pdf(report_name.strip(), payload)
-                        if not pdf_bytes:
-                            st.error("PDF generation returned empty content.")
+                        if not pdf_bytes or len(pdf_bytes) == 0:
+                            st.error("PDF generation returned empty content. Check server logs.")
                         else:
                             st.session_state['generated_pdf'] = pdf_bytes
                             st.session_state['generated_pdf_name'] = (
@@ -1372,6 +1479,7 @@ if st.session_state.loans:
                             st.rerun()
                     except Exception as e:
                         st.error(f"PDF generation failed: {e}")
+                        st.code(traceback.format_exc(), language="python")
 
     if 'generated_pdf' in st.session_state and st.session_state['generated_pdf']:
         pdf_data = st.session_state['generated_pdf']
