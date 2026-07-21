@@ -6,7 +6,7 @@ import copy
 import time
 
 # ==========================================
-# 🔐 AUTHENTICATION SYSTEM (DTI Style)
+# 🔐 AUTHENTICATION SYSTEM (DTI Profile Style)
 # ==========================================
 def _check_credentials(username: str, password: str) -> bool:
     try:
@@ -16,44 +16,146 @@ def _check_credentials(username: str, password: str) -> bool:
         return (username == "admin" and password == "admin")
 
 def login_ui():
-    st.markdown("<style>[data-testid=\"stSidebar\"] { display: none; }</style>", unsafe_allow_html=True)
-    cols = st.columns([1, 1.2, 1])
-    with cols[1]:
-        st.markdown("<div style='margin-top: 10vh;'></div>", unsafe_allow_html=True)
-        with st.container():
-            st.markdown("""
-            <div class='login-container'>
-            <div style='font-size: 3rem; margin-bottom: 1rem;'>🏦</div>
-            <div class='login-header'>Welcome Back</div>
-            <div class='login-sub'>Sign in to access the Integrated Analysis Engine</div>
-            </div>
-            """, unsafe_allow_html=True)
-        with st.form("login_form", clear_on_submit=False):
-            username = st.text_input("Username", placeholder="Enter your username")
-            password = st.text_input("Password", type="password", placeholder="Enter your password")
-            st.markdown("<div style='margin-top: 1rem;'></div>", unsafe_allow_html=True)
-            submit = st.form_submit_button("Sign In", type="primary", width='stretch')
-            if submit:
-                try:
-                    if _check_credentials(username, password):
-                        st.session_state['authenticated'] = True
-                        st.success("Access Granted")
-                        time.sleep(0.5)
-                        st.rerun()
-                    else:
-                        st.error("Invalid credentials")
-                except Exception:
-                    st.error("Secrets not configured correctly")
+    st.markdown("""
+    <style>
+    [data-testid="stSidebar"] { display: none !important; }
+    #MainMenu, footer, header { visibility: hidden !important; }
+    .stApp {
+        background: linear-gradient(145deg, #eef2ff 0%, #f5f3ff 50%, #ede9fe 100%) !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    }
+    .block-container {
+        max-width: 100% !important;
+        padding: 0 1rem !important;
+        margin: 0 auto !important;
+    }
+    div[data-testid="stHorizontalBlock"] > div:nth-child(2) > div[data-testid="stVerticalBlock"] {
+        max-width: 580px !important;
+        width: 100% !important;
+        margin: 8vh auto 3rem auto !important;
+        background: #ffffff !important;
+        border-radius: 24px !important;
+        overflow: hidden !important;
+        border: 1px solid rgba(99,102,241,0.15) !important;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.02), 0 12px 40px rgba(99,102,241,0.12), 0 32px 64px rgba(99,102,241,0.08) !important;
+        padding: 0 !important;
+    }
+    .lp-header {
+        background: linear-gradient(135deg, #4338ca 0%, #6d28d9 55%, #7c3aed 100%);
+        margin: 0; padding: 3.5rem 2.5rem 3rem;
+        text-align: center; border-radius: 24px 24px 0 0;
+        position: relative; overflow: hidden;
+    }
+    .lp-header::before {
+        content: ''; position: absolute; top: -40%; left: -30%; width: 160%; height: 160%;
+        background: radial-gradient(ellipse, rgba(255,255,255,0.12) 0%, transparent 65%); pointer-events: none;
+    }
+    .lp-logo { font-size: 3.5rem; display: block; margin-bottom: 1rem; position: relative; z-index: 1; }
+    .lp-app-name { font-size: 1.85rem; font-weight: 800; color: #ffffff; letter-spacing: -0.04em; margin-bottom: 0.5rem; position: relative; z-index: 1; }
+    .lp-app-tagline { font-size: 0.85rem; color: rgba(255,255,255,0.75); font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; position: relative; z-index: 1; }
+    
+    .login-body { padding: 2.5rem; }
+    .lp-welcome-title { font-size: 1.35rem; font-weight: 700; color: #1e1b4b; margin-bottom: 0.5rem; }
+    .lp-welcome-sub { font-size: 0.95rem; color: #64748b; line-height: 1.5; margin-bottom: 1.5rem; }
+    
+    .lp-field-label { display: block; font-size: 0.82rem; font-weight: 600; color: #374151; margin-bottom: 0.4rem; margin-top: 1.2rem; }
+    
+    div[data-testid="stTextInput"] label { display: none !important; }
+    div[data-testid="stTextInput"] > div { background: transparent !important; }
+    div[data-testid="stTextInput"] > div > div {
+        background: #f9fafb !important; border: 1.5px solid #e5e7eb !important;
+        border-radius: 12px !important; transition: all 0.2s ease;
+    }
+    div[data-testid="stTextInput"] > div > div:focus-within {
+        border-color: #7c3aed !important; background: #ffffff !important;
+        box-shadow: 0 0 0 4px rgba(124,58,237,0.1) !important;
+    }
+    div[data-testid="stTextInput"] > div > div > input {
+        background: transparent !important; border: none !important; color: #111827 !important;
+        font-size: 1rem !important; font-family: 'Inter', sans-serif !important; padding: 0.85rem 1rem !important;
+    }
+    div[data-testid="stTextInput"] > div > div > input::placeholder { color: #9ca3af !important; }
+    
+    div.stButton > button {
+        width: 100% !important;
+        background: linear-gradient(135deg, #4338ca 0%, #7c3aed 100%) !important;
+        color: #ffffff !important; border: none !important; border-radius: 12px !important;
+        font-weight: 700 !important; font-size: 1.05rem !important; padding: 0.9rem 1.5rem !important;
+        margin-top: 1.8rem !important; letter-spacing: 0.025em !important;
+        transition: all 0.2s ease !important; box-shadow: 0 4px 14px rgba(124,58,237,0.3) !important;
+    }
+    div.stButton > button:hover {
+        transform: translateY(-1px) !important; box-shadow: 0 8px 24px rgba(124,58,237,0.4) !important;
+    }
+    div.stButton > button:active { transform: translateY(0) !important; }
+    
+    .lp-error {
+        background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px;
+        padding: 0.8rem 1rem; margin-top: 1rem; font-size: 0.85rem; color: #b91c1c;
+        font-weight: 500; display: flex; gap: 0.5rem; align-items: flex-start;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    if "_login_error" not in st.session_state:
+        st.session_state["_login_error"] = ""
+        
+    _, card_col, _ = st.columns([1, 2.2, 1])
+    with card_col:
+        st.markdown("""
+        <div class="lp-header">
+            <span class="lp-logo"></span>
+            <div class="lp-app-name">Integrated Analysis Engine</div>
+            <div class="lp-app-tagline">DTI & LTV Credit Assessment Platform</div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown('<div class="login-body">', unsafe_allow_html=True)
+        st.markdown('<div class="lp-welcome-title">Welcome Back</div>', unsafe_allow_html=True)
+        st.markdown('<div class="lp-welcome-sub">Sign in with your institutional credentials to access the integrated analysis platform.</div>', unsafe_allow_html=True)
+        
+        st.markdown('<span class="lp-field-label">Username</span>', unsafe_allow_html=True)
+        username = st.text_input(label="u", placeholder="Enter your username", key="_login_u", label_visibility="collapsed", autocomplete="username")
+        
+        st.markdown('<span class="lp-field-label">Password</span>', unsafe_allow_html=True)
+        password = st.text_input(label="p", placeholder="Enter your password", type="password", key="_login_p", label_visibility="collapsed", autocomplete="current-password")
+        
+        clicked = st.button("Sign In →", key="_login_btn", use_container_width=True)
+        
+        err = st.session_state.get("_login_error", "")
+        if err:
+            st.markdown(f'<div class="lp-error"><span>⚠</span><span>{err}</span></div>', unsafe_allow_html=True)
+        
+        st.markdown('</div>', unsafe_allow_html=True)
+        
+        if clicked:
+            u = str(username).strip(); p = str(password).strip()
+            if not u:
+                st.session_state["_login_error"] = "Username is required to continue."
+                st.rerun()
+            elif not p:
+                st.session_state["_login_error"] = "Password is required to continue."
+                st.rerun()
+            elif _check_credentials(u, p):
+                st.session_state["authenticated"] = True
+                st.session_state["auth_username"] = u
+                st.session_state["_login_error"] = ""
+                st.rerun()
+            else:
+                st.session_state["_login_error"] = f'Invalid credentials for "{u}". Please check your username and password and try again.'
+                st.rerun()
 
-if 'authenticated' not in st.session_state:
-    st.session_state['authenticated'] = False
+if "authenticated" not in st.session_state: 
+    st.session_state["authenticated"] = False
+if "auth_username" not in st.session_state: 
+    st.session_state["auth_username"] = ""
 
-if not st.session_state['authenticated']:
+if not st.session_state["authenticated"]: 
     login_ui()
     st.stop()
 
 # ==========================================
-#  PAGE CONFIG & GLOBAL STYLES
+# 🎨 PAGE CONFIG & GLOBAL STYLES
 # ==========================================
 st.set_page_config(
     page_title="Integrated DTI & LTV Analysis Engine",
@@ -64,75 +166,96 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
-
-html, body, [class*="css"] {
-    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+* { box-sizing: border-box; }
+#MainMenu, footer, header { visibility: hidden; }
+.stApp {
+    background: linear-gradient(145deg, #f0f4ff 0%, #faf5ff 50%, #ede9fe 100%) !important;
+    font-family: 'Inter', sans-serif !important;
     color: #1a1f36;
-    letter-spacing: -0.01em;
 }
-.block-container { max-width: 95% !important; }
-.main { background: linear-gradient(135deg, #f0f4ff 0%, #faf5ff 100%); }
+.block-container { max-width: 96% !important; padding-top: 1.5rem !important; }
 
-.login-container {
-    background: white; padding: 3rem; border-radius: 24px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.08); text-align: center;
-    border: 1px solid #e2e8f0;
+[data-testid="stSidebar"] { 
+    background: linear-gradient(180deg, #1e1b4b 0%, #312e81 100%); 
+    box-shadow: 4px 0 24px rgba(0,0,0,0.18); 
 }
-.login-header { font-size: 1.75rem; font-weight: 800; margin-bottom: 0.5rem; color: #0f172a; }
-.login-sub { color: #64748b; font-size: 0.95rem; margin-bottom: 2rem; }
+[data-testid="stSidebar"] * { color: #e0e7ff; }
+[data-testid="stSidebar"] .stSelectbox div[data-baseweb="select"], 
+[data-testid="stSidebar"] input { 
+    background: rgba(255,255,255,0.95) !important; 
+    color: #1e1b4b !important; 
+    font-weight: 600; 
+    border-radius: 8px;
+}
 
-div[data-testid="stTextInput"] input {
-    border-radius: 12px !important; border: 1px solid #e2e8f0 !important;
-    padding: 1rem !important; font-size: 1rem !important;
+[data-testid="stSidebar"] .stRadio > div {
+    background: rgba(255,255,255,0.95) !important;
+    border-radius: 8px;
+    padding: 0.5rem !important;
+    margin: 0.5rem 0 !important;
+}
+[data-testid="stSidebar"] .stRadio label {
+    color: #1e1b4b !important;
+    font-weight: 600 !important;
+    font-size: 0.9rem !important;
+}
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] {
+    gap: 0.5rem !important;
+}
+[data-testid="stSidebar"] .stRadio input[type="radio"] {
+    accent-color: #7c3aed !important;
+}
+
+[data-testid="stSidebar"] .stExpander {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+[data-testid="stSidebar"] .stExpander summary {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    font-size: 1rem !important;
+    padding: 0.8rem 1rem !important;
+    background: rgba(255,255,255,0.08);
+}
+[data-testid="stSidebar"] .stExpander .streamlit-expanderContent {
+    padding: 1rem !important;
+}
+
+div[data-testid="stTextInput"] input, div[data-testid="stNumberInput"] input {
+    border-radius: 10px !important; border: 1px solid #e2e8f0 !important;
+    padding: 0.65rem 0.9rem !important; font-size: 0.95rem !important;
     background: #f8fafc !important; transition: all 0.2s;
 }
-div[data-testid="stTextInput"] input:focus {
-    border-color: #7c3aed !important;
-    box-shadow: 0 0 0 4px rgba(124,58,237,0.1) !important;
-    background: white !important;
+div[data-testid="stTextInput"] input:focus, div[data-testid="stNumberInput"] input:focus {
+    border-color: #7c3aed !important; box-shadow: 0 0 0 3px rgba(124,58,237,0.12) !important; background: white !important;
 }
 
-[data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #1e1b4b 0%, #312e81 100%);
-    box-shadow: 4px 0 24px rgba(0,0,0,0.12);
-}
-[data-testid="stSidebar"] * { color: #f1f5f9; }
-[data-testid="stSidebar"] input,
-[data-testid="stSidebar"] .stSelectbox div[data-baseweb="select"] {
-    background: rgba(255,255,255,0.95) !important;
-    color: #334155 !important; font-weight: 600;
-}
-
-div.stButton > button[kind="primary"],
-div.stButton > button[data-testid="baseButton-primary"] {
+div.stButton > button[kind="primary"], div.stButton > button[data-testid="baseButton-primary"] {
     background-color: #7c3aed !important; border-color: #7c3aed !important;
-    color: white !important; border-radius: 8px; font-weight: 600;
-    transition: all 0.3s ease;
+    color: white !important; border-radius: 8px; font-weight: 600; transition: all 0.2s ease;
 }
-div.stButton > button[kind="primary"]:hover,
-div.stButton > button[data-testid="baseButton-primary"]:hover {
-    background-color: #6d28d9 !important; border-color: #6d28d9 !important;
-}
+div.stButton > button[kind="primary"]:hover { background-color: #6d28d9 !important; border-color: #6d28d9 !important; transform: translateY(-1px); }
 
-.metric-card {
-    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-    padding: 1.5rem; border-radius: 16px; border: 1px solid #e2e8f0;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+.metric-card { 
+    background: linear-gradient(135deg, #ffffff 0%, #f5f3ff 100%); 
+    padding: 1.25rem 1.5rem; border-radius: 14px; border: 1px solid #ddd6fe; 
+    box-shadow: 0 4px 14px rgba(124,58,237,0.08); 
 }
-.metric-value { font-size: 2rem; font-weight: 800; color: #0f172a; font-family: 'JetBrains Mono', monospace; }
+.metric-label { font-size: 0.75rem; font-weight: 700; color: #7c3aed; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.35rem; }
+.metric-value { font-size: 1.7rem; font-weight: 700; color: #1e1b4b; font-family: 'DM Mono', monospace; line-height: 1.1; }
 
-.status-banner {
-    padding: 1rem 1.5rem; border-radius: 12px; font-weight: 700;
-    font-size: 1rem; text-align: center; margin: 1.5rem 0;
-}
-.status-banner-pass { background: #d1fae5; border: 2px solid #10b981; color: #065f46; }
-.status-banner-fail { background: #fee2e2; border: 2px solid #ef4444; color: #991b1b; }
+.status-banner { padding: 0.9rem 1.5rem; border-radius: 12px; font-weight: 700; font-size: 1rem; text-align: center; margin: 1.25rem 0; }
+.status-pass { background: #d1fae5; border: 2px solid #059669; color: #065f46; }
+.status-fail { background: #fee2e2; border: 2px solid #dc2626; color: #991b1b; }
 
 .input-section {
     background: white; padding: 2rem; border-radius: 16px;
     border-left: 4px solid #7c3aed;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.08); margin-bottom: 2rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.05); margin-bottom: 2rem;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -204,7 +327,7 @@ def init_state():
 init_state()
 
 # ==========================================
-#  HELPER & LTV ENGINE FUNCTIONS
+# 🧮 HELPER FUNCTIONS
 # ==========================================
 def get_policy_dict():
     return {p["Loan Type"]: (None if p["Unsecured"] else p["Max LTV%"]) for p in st.session_state.ltv_policy}
@@ -343,9 +466,6 @@ def run_portfolio_ltv(loans, fmv_sources):
         'wtd_ltv': wtd_ltv, 'aggregate_ltv': aggregate_ltv, 'overall_pass': overall_pass
     }
 
-# ==========================================
-# 🧮 DTI ENGINE
-# ==========================================
 def calculate_obligation(loan_type, principal, rate, tenure):
     if principal <= 0 or rate <= 0: return 0.0
     r_monthly = (rate / 100) / 12
@@ -390,7 +510,7 @@ def run_waterfall_allocation(df, total_income):
     return df_sorted
 
 # ==========================================
-# 📄 FPDF2 PDF ENGINE (No System Dependencies)
+# 📄 PDF GENERATION (FPDF2 - Reliable)
 # ==========================================
 class IntegratedPDFReport(FPDF):
     def header(self):
@@ -420,7 +540,6 @@ def generate_integrated_pdf(client_name, report_data):
     pdf.client_name = client_name
     pdf.date_str = datetime.now().strftime("%B %d, %Y")
     
-    # Extract Data
     gross_income = report_data.get('gross_income', 0)
     eff_income = report_data.get('eff_income', 0)
     scenario_name = report_data.get('scenario_name', 'Baseline')
@@ -644,7 +763,7 @@ def generate_integrated_pdf(client_name, report_data):
 with st.sidebar:
     st.markdown("## ⚙️ Configuration Panel")
     
-    with st.expander(" Income & Stress Configuration (DTI)", expanded=True):
+    with st.expander("💰 Income & Stress Configuration (DTI)", expanded=True):
         inc_mode = st.radio("Income Entry Method", ["Single Total", "Multiple Sources"])
         gross_income = 0.0
         if inc_mode == "Single Total":
@@ -853,9 +972,9 @@ if st.session_state.loans:
     with k4: st.markdown(f"<div class='metric-card'><div class='metric-label'>Income Shortfall</div><div class='metric-value'>Rs.{dti_shortfall:,.0f}</div></div>", unsafe_allow_html=True)
     
     if dti_overall_pass:
-        st.markdown("<div class='status-banner status-banner-pass'>✅ DTI REQUEST APPROVED</div>", unsafe_allow_html=True)
+        st.markdown("<div class='status-banner status-pass'>✅ DTI REQUEST APPROVED</div>", unsafe_allow_html=True)
     else:
-        st.markdown("<div class='status-banner status-banner-fail'>⚠️ DTI PORTFOLIO DECLINED</div>", unsafe_allow_html=True)
+        st.markdown("<div class='status-banner status-fail'>️ DTI PORTFOLIO DECLINED</div>", unsafe_allow_html=True)
         
     disp_dti = df_dti_res.copy()
     disp_dti['Status'] = disp_dti['Pass_Status'].apply(lambda x: "✅ PASS" if x else "❌ FAIL")
@@ -871,9 +990,9 @@ if st.session_state.loans:
     with k8: st.markdown(f"<div class='metric-card'><div class='metric-label'>Aggregate LTV</div><div class='metric-value'>{ltv_summary['aggregate_ltv']:.2f}%</div></div>", unsafe_allow_html=True)
     
     if ltv_overall_pass:
-        st.markdown("<div class='status-banner status-banner-pass'>✅ LTV PORTFOLIO APPROVED</div>", unsafe_allow_html=True)
+        st.markdown("<div class='status-banner status-pass'>✅ LTV PORTFOLIO APPROVED</div>", unsafe_allow_html=True)
     else:
-        st.markdown("<div class='status-banner status-banner-fail'>⚠️ LTV PORTFOLIO DECLINED</div>", unsafe_allow_html=True)
+        st.markdown("<div class='status-banner status-fail'>⚠️ LTV PORTFOLIO DECLINED</div>", unsafe_allow_html=True)
         
     disp_ltv = []
     for r in ltv_results:
@@ -890,7 +1009,7 @@ if st.session_state.loans:
             "ID": r.get('loan_account_id'), "Facility": r['Loan Type'], "Principal": f"Rs. {r['Principal']:,.0f}",
             "Total FMV": "N/A" if is_unsec else f"Rs. {r['Total FMV']:,.0f}",
             "LTV%": ltv_disp, "Max LTV%": "N/A" if (is_unsec or max_ltv is None) else f"{max_ltv:.0f}%",
-            "Status": "✅ PASS" if r['Pass_Status'] else "❌ FAIL"
+            "Status": "✅ PASS" if r['Pass_Status'] else " FAIL"
         })
     st.dataframe(pd.DataFrame(disp_ltv), hide_index=True, use_container_width=True)
     
