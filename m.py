@@ -1674,4 +1674,4 @@ else:
         "👋 Add facilities using the form above to begin analysis. "
         "Ensure Income and Collateral configurations are set in the sidebar."
     )
-```
+
