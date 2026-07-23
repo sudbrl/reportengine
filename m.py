@@ -1,6 +1,3 @@
-Here is the complete, updated Streamlit application code with the requested PDF modifications applied:
-
-```python
 import streamlit as st
 import pandas as pd
 from fpdf import FPDF
