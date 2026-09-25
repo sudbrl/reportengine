@@ -66,6 +66,7 @@ def login_ui():
     div[data-testid="stTextInput"] > div > div > input {
         background: transparent !important; border: none !important; color: #0F172A !important;
         font-size: 0.95rem !important; padding: 0.75rem 0.9rem !important;
+        -webkit-text-fill-color: #0F172A !important;
     }
     div[data-testid="stTextInput"] > div > div > input::placeholder { color: #94A3B8 !important; }
     div[data-testid="stTextInput"] label { display: none !important; }
@@ -155,7 +156,7 @@ if not st.session_state["authenticated"]:
     st.stop()
 
 # ==========================================
-# GLOBAL STYLES  (FIXED CONTRAST + NEW DESIGN)
+# GLOBAL STYLES (PROFESSIONAL DESIGN + FULL CONTRAST FIX)
 # ==========================================
 st.markdown("""
 <style>
@@ -174,15 +175,13 @@ p { color: #334155; }
 hr { border-color: #E5EAF1 !important; margin: 1.75rem 0 !important; }
 
 /* =====================================================
-   SIDEBAR — DARK TERMINAL (FULLY READABLE)
+   SIDEBAR SHELL
    ===================================================== */
 section[data-testid="stSidebar"],
 section[data-testid="stSidebar"] > div,
-div[data-testid="stSidebarContent"] {
-    background: #0D1526 !important;
-}
+div[data-testid="stSidebarContent"] { background: #0D1526 !important; }
 
-/* --- Master text-visibility rules (fixes invisible labels) --- */
+/* --- Master text-visibility rules --- */
 section[data-testid="stSidebar"] p,
 section[data-testid="stSidebar"] li,
 section[data-testid="stSidebar"] h1, section[data-testid="stSidebar"] h2,
@@ -196,9 +195,7 @@ section[data-testid="stSidebar"] .stCaption,
 section[data-testid="stSidebar"] div[data-testid="stWidgetLabel"],
 section[data-testid="stSidebar"] div[data-testid="stWidgetLabel"] p,
 section[data-testid="stSidebar"] div[data-testid="stWidgetLabel"] span,
-section[data-testid="stSidebar"] div[data-testid="stWidgetLabel"] label {
-    color: #D7E1F0 !important;
-}
+section[data-testid="stSidebar"] div[data-testid="stWidgetLabel"] label { color: #D7E1F0 !important; }
 
 /* --- Brand header --- */
 .sb-brand { display: flex; align-items: center; gap: 0.7rem; padding: 0.25rem 0.25rem 1.1rem;
@@ -232,26 +229,56 @@ section[data-testid="stSidebar"] .streamlit-expanderContent {
     background: transparent !important; border-top: 1px solid #22304A !important; padding: 1rem !important;
 }
 
-/* --- Inputs --- */
-section[data-testid="stSidebar"] input,
-section[data-testid="stSidebar"] textarea,
-section[data-testid="stSidebar"] div[data-baseweb="select"] > div {
-    background-color: #0A101F !important; border: 1px solid #263650 !important;
-    color: #F1F5F9 !important; border-radius: 8px !important;
-}
-section[data-testid="stSidebar"] input:focus,
-section[data-testid="stSidebar"] textarea:focus,
-section[data-testid="stSidebar"] div[data-baseweb="select"]:focus-within > div {
-    border-color: #3B82F6 !important; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18) !important;
-}
-section[data-testid="stSidebar"] input::placeholder,
-section[data-testid="stSidebar"] textarea::placeholder { color: #5B6B84 !important; opacity: 1; }
-section[data-testid="stSidebar"] div[data-baseweb="select"] span { color: #F1F5F9 !important; }
-section[data-testid="stSidebar"] div[data-testid="stNumberInput"] button {
-    color: #8CA3C7 !important; background: transparent !important;
+/* =====================================================
+   SIDEBAR INPUTS — HARDENED VISIBILITY
+   (container dark + text light in ALL states)
+   ===================================================== */
+section[data-testid="stSidebar"] div[data-testid="stTextInput"] > div,
+section[data-testid="stSidebar"] div[data-testid="stNumberInput"] > div,
+section[data-testid="stSidebar"] div[data-testid="stTextInput"] > div > div,
+section[data-testid="stSidebar"] div[data-testid="stNumberInput"] > div > div,
+section[data-testid="stSidebar"] div[data-testid="stNumberInputContainer"],
+section[data-testid="stSidebar"] div[data-testid="stDateInput"] > div {
+    background-color: #0A101F !important;
+    border: 1px solid #263650 !important;
+    border-radius: 8px !important;
 }
 
-/* --- Radio / checkbox / toggle --- */
+section[data-testid="stSidebar"] input,
+section[data-testid="stSidebar"] textarea {
+    background-color: transparent !important;
+    color: #F1F5F9 !important;
+    -webkit-text-fill-color: #F1F5F9 !important;
+    caret-color: #F1F5F9 !important;
+    border: none !important;
+    opacity: 1 !important;
+}
+
+section[data-testid="stSidebar"] input:not(:placeholder-shown),
+section[data-testid="stSidebar"] input:focus,
+section[data-testid="stSidebar"] input:hover {
+    color: #F1F5F9 !important;
+    -webkit-text-fill-color: #F1F5F9 !important;
+}
+
+section[data-testid="stSidebar"] div[data-testid="stTextInput"]:focus-within > div,
+section[data-testid="stSidebar"] div[data-testid="stNumberInput"]:focus-within > div,
+section[data-testid="stSidebar"] div[data-testid="stDateInput"]:focus-within > div {
+    border-color: #3B82F6 !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18) !important;
+}
+
+section[data-testid="stSidebar"] input::placeholder,
+section[data-testid="stSidebar"] textarea::placeholder { color: #5B6B84 !important; opacity: 1; }
+
+/* --- Number-input stepper (+ / −) buttons --- */
+section[data-testid="stSidebar"] div[data-testid="stNumberInput"] button,
+section[data-testid="stSidebar"] div[data-testid="stNumberInput"] button svg {
+    color: #8CA3C7 !important; fill: currentColor !important; background: transparent !important;
+}
+section[data-testid="stSidebar"] div[data-testid="stNumberInput"] button:hover { color: #F1F5F9 !important; }
+
+/* --- Radio / checkbox --- */
 section[data-testid="stSidebar"] div[role="radiogroup"] {
     background: #0A101F !important; border: 1px solid #263650 !important;
     border-radius: 8px !important; padding: 0.4rem !important;
@@ -260,10 +287,28 @@ section[data-testid="stSidebar"] div[role="radiogroup"] label span { color: #D7E
 section[data-testid="stSidebar"] input[type="radio"],
 section[data-testid="stSidebar"] input[type="checkbox"] { accent-color: #3B82F6 !important; }
 
-/* --- Multiselect tags --- */
+/* --- Selectbox / multiselect --- */
+section[data-testid="stSidebar"] div[data-baseweb="select"] > div {
+    background-color: #0A101F !important; border: 1px solid #263650 !important; border-radius: 8px !important;
+}
+section[data-testid="stSidebar"] div[data-baseweb="select"] input {
+    background: transparent !important; color: #F1F5F9 !important;
+    -webkit-text-fill-color: #F1F5F9 !important;
+}
+section[data-testid="stSidebar"] div[data-baseweb="select"] span,
+section[data-testid="stSidebar"] div[data-baseweb="select"] svg { color: #F1F5F9 !important; }
 section[data-testid="stSidebar"] div[data-baseweb="tag"],
 section[data-testid="stSidebar"] div[data-baseweb="tag"] * {
     background: #1D2C49 !important; color: #D7E1F0 !important; border-radius: 6px !important;
+}
+
+/* --- Toggle & slider knobs --- */
+section[data-testid="stSidebar"] div[role="switch"] { background: #263650 !important; }
+section[data-testid="stSidebar"] div[role="switch"][aria-checked="true"] { background: #2563EB !important; }
+section[data-testid="stSidebar"] div[role="switch"] div { background: #F1F5F9 !important; }
+section[data-testid="stSidebar"] [data-testid="stSlider"] div[data-testid="stSliderTrack"] { background: #263650 !important; }
+section[data-testid="stSidebar"] [data-testid="stSlider"] div[role="slider"] {
+    background: #F1F5F9 !important; border: 2px solid #2563EB !important;
 }
 
 /* --- Forms & alerts in sidebar --- */
@@ -365,18 +410,32 @@ section[data-testid="stSidebar"] hr { border-color: #22304A !important; margin: 
 .table-wrap { border: 1px solid #E5EAF1; border-radius: 10px; overflow: hidden; }
 .table-wrap [data-testid="stDataFrame"] { border: none !important; border-radius: 0 !important; }
 
-/* Main inputs */
-div[data-testid="stTextInput"] input,
-div[data-testid="stNumberInput"] input,
-div[data-baseweb="select"] > div {
+/* --- Main-area inputs (scoped to <main> so sidebar stays dark) --- */
+main div[data-testid="stTextInput"] > div,
+main div[data-testid="stNumberInput"] > div,
+main div[data-testid="stDateInput"] > div,
+main div[data-baseweb="select"] > div {
     border-radius: 8px !important; border: 1px solid #D7DFEA !important;
     background-color: #FFFFFF !important; transition: all 0.2s ease;
 }
-div[data-testid="stTextInput"] input:focus,
-div[data-testid="stNumberInput"] input:focus,
-div[data-baseweb="select"]:focus-within > div {
+main div[data-testid="stTextInput"] input,
+main div[data-testid="stNumberInput"] input,
+main div[data-testid="stDateInput"] input,
+main textarea {
+    color: #0F172A !important;
+    -webkit-text-fill-color: #0F172A !important;
+    caret-color: #0F172A !important;
+    background-color: transparent !important;
+    border: none !important;
+}
+main div[data-testid="stTextInput"] input::placeholder,
+main div[data-testid="stNumberInput"] input::placeholder { color: #94A3B8 !important; }
+main div[data-testid="stTextInput"]:focus-within > div,
+main div[data-testid="stNumberInput"]:focus-within > div,
+main div[data-baseweb="select"]:focus-within > div {
     border-color: #2563EB !important; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
 }
+main div[data-baseweb="select"] span { color: #0F172A !important; }
 
 /* Main buttons */
 .stButton > button { border-radius: 8px !important; font-weight: 600 !important; transition: all 0.15s ease !important; }
@@ -1272,7 +1331,7 @@ def generate_integrated_pdf(client_name: str, report_data: dict) -> bytes:
 
 
 # ==========================================
-# SIDEBAR  (REDESIGNED + READABLE)
+# SIDEBAR
 # ==========================================
 with st.sidebar:
     st.markdown("""
