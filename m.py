@@ -35,7 +35,7 @@ def login_ui():
     [data-testid="stSidebar"]       { display: none !important; }
     #MainMenu, footer, header       { visibility: hidden !important; }
     .stApp {
-        background: linear-gradient(145deg, #0f172a 0%, #1e1b4b 40%, #312e81 100%) !important;
+        background: linear-gradient(135deg, #F1F5F9 0%, #E2E8F0 100%) !important;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
     }
     .block-container {
@@ -55,66 +55,65 @@ def login_ui():
         gap: 0 !important;
     }
     [data-testid="stHorizontalBlock"] > div:nth-child(2) > div {
-        background: #ffffff !important;
-        border-radius: 20px !important;
-        border: 1px solid rgba(99,102,241,0.12) !important;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 4px 6px rgba(0,0,0,0.05) !important;
+        background: #FFFFFF !important;
+        border-radius: 12px !important;
+        border: 1px solid #E2E8F0 !important;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
         padding: 0 !important;
         overflow: hidden !important;
-        max-width: 460px !important;
+        max-width: 440px !important;
         margin: 0 auto !important;
     }
     .login-header {
-        background: linear-gradient(135deg, #4338ca 0%, #6d28d9 55%, #7c3aed 100%);
-        padding: 2.8rem 2rem 2.2rem;
+        background-color: #0F172A;
+        padding: 2.5rem 2rem;
         text-align: center;
-        position: relative;
-        overflow: hidden;
+        border-bottom: 3px solid #2563EB;
     }
-    .login-header::before {
-        content: '';
-        position: absolute; top: -50%; left: -30%;
-        width: 160%; height: 200%;
-        background: radial-gradient(ellipse, rgba(255,255,255,0.10) 0%, transparent 60%);
-        pointer-events: none;
-    }
-    .login-header .logo-icon { font-size: 3rem; display: block; margin-bottom: 0.8rem; position: relative; z-index: 1; }
-    .login-header .app-title { font-size: 1.55rem; font-weight: 800; color: #fff; letter-spacing: -0.03em; margin-bottom: 0.35rem; position: relative; z-index: 1; }
-    .login-header .app-sub { font-size: 0.78rem; color: rgba(255,255,255,0.72); font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; position: relative; z-index: 1; }
-    .login-body-area { padding: 2rem 2.2rem 1rem; }
-    .login-body-area .welcome-title { font-size: 1.25rem; font-weight: 700; color: #1e1b4b; margin-bottom: 0.3rem; }
-    .login-body-area .welcome-sub { font-size: 0.88rem; color: #64748b; line-height: 1.55; margin-bottom: 1.4rem; }
-    .field-label { display: block; font-size: 0.8rem; font-weight: 600; color: #374151; margin-bottom: 0.35rem; margin-top: 1.1rem; }
+    .login-header .logo-icon { font-size: 2.5rem; display: block; margin-bottom: 1rem; position: relative; z-index: 1; }
+    .login-header .app-title { font-size: 1.35rem; font-weight: 700; color: #FFFFFF; letter-spacing: -0.02em; margin-bottom: 0.25rem; position: relative; z-index: 1; }
+    .login-header .app-sub { font-size: 0.8rem; color: #94A3B8; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; position: relative; z-index: 1; }
+    .login-body-area { padding: 2rem 2rem 1rem; }
+    .login-body-area .welcome-title { font-size: 1.25rem; font-weight: 600; color: #0F172A; margin-bottom: 0.5rem; }
+    .login-body-area .welcome-sub { font-size: 0.875rem; color: #64748B; line-height: 1.5; margin-bottom: 1.5rem; }
+    .field-label { display: block; font-size: 0.8rem; font-weight: 600; color: #334155; margin-bottom: 0.4rem; margin-top: 1.2rem; }
     div[data-testid="stTextInput"] > div > div {
-        background: #f9fafb !important; border: 1.5px solid #e5e7eb !important;
-        border-radius: 10px !important; transition: all 0.2s ease;
+        background: #F8FAFC !important; border: 1px solid #CBD5E1 !important;
+        border-radius: 6px !important; transition: all 0.2s ease;
     }
     div[data-testid="stTextInput"] > div > div:focus-within {
-        border-color: #7c3aed !important; background: #fff !important;
-        box-shadow: 0 0 0 3px rgba(124,58,237,0.10) !important;
+        border-color: #2563EB !important; background: #FFFFFF !important;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
     }
     div[data-testid="stTextInput"] > div > div > input {
         background: transparent !important; border: none !important;
-        color: #111827 !important; font-size: 0.95rem !important; padding: 0.75rem 0.9rem !important;
+        color: #0F172A !important; font-size: 0.95rem !important; padding: 0.75rem 0.9rem !important;
     }
-    div[data-testid="stTextInput"] > div > div > input::placeholder { color: #9ca3af !important; }
+    div[data-testid="stTextInput"] > div > div > input::placeholder { color: #94A3B8 !important; }
     div[data-testid="stTextInput"] label { display: none !important; }
     div.stButton > button {
         width: 100% !important;
-        background: linear-gradient(135deg, #4338ca 0%, #7c3aed 100%) !important;
-        color: #fff !important; border: none !important; border-radius: 10px !important;
-        font-weight: 700 !important; font-size: 1rem !important;
-        padding: 0.8rem 1.5rem !important; margin-top: 1.6rem !important;
-        box-shadow: 0 4px 14px rgba(124,58,237,0.30) !important;
-        transition: all 0.2s ease !important;
+        background: #2563EB !important;
+        color: #FFFFFF !important; border: 1px solid #2563EB !important; border-radius: 6px !important;
+        font-weight: 600 !important; font-size: 0.95rem !important;
+        padding: 0.75rem 1.5rem !important; margin-top: 1.5rem !important;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+        transition: all 0.15s ease !important;
     }
-    div.stButton > button:hover { transform: translateY(-1px) !important; box-shadow: 0 8px 24px rgba(124,58,237,0.40) !important; }
+    div.stButton > button:hover { background: #1D4ED8 !important; border-color: #1D4ED8 !important; }
     .login-error-box {
-        background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px;
-        padding: 0.7rem 0.9rem; margin-top: 1rem; font-size: 0.82rem;
-        color: #b91c1c; font-weight: 500; display: flex; gap: 0.5rem; align-items: flex-start;
+        background: #FEF2F2; border: 1px solid #FECACA; border-radius: 6px;
+        padding: 0.75rem 1rem; margin-top: 1rem; font-size: 0.85rem;
+        color: #991B1B; font-weight: 500; display: flex; gap: 0.5rem; align-items: center;
     }
-    .login-footer { text-align: center; padding: 1rem 2rem 1.4rem; font-size: 0.72rem; color: #94a3b8; border-top: 1px solid #f1f5f9; }
+    .login-footer { 
+        text-align: center; 
+        padding: 1.25rem 2rem; 
+        font-size: 0.75rem; 
+        color: #94A3B8; 
+        background-color: #F8FAFC;
+        border-top: 1px solid #E2E8F0; 
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -154,7 +153,7 @@ def login_ui():
             autocomplete="current-password"
         )
 
-        clicked = st.button("Sign In →", key="_login_btn", use_container_width=True)
+        clicked = st.button("Sign In", key="_login_btn", use_container_width=True)
 
         err = st.session_state.get("_login_error", "")
         if err:
@@ -204,43 +203,255 @@ if not st.session_state["authenticated"]:
 # ==========================================
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* Global Resets & Typography */
 * { box-sizing: border-box; }
 #MainMenu, footer, header { visibility: hidden; }
+
+html, body, [class*="css"] {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
 .stApp {
-    background: linear-gradient(145deg, #f0f4ff 0%, #faf5ff 50%, #ede9fe 100%) !important;
-    font-family: 'Inter', sans-serif !important; color: #1a1f36;
+    background-color: #F8FAFC !important;
+    color: #0F172A;
 }
-.block-container { max-width: 96% !important; padding-top: 1.5rem !important; }
-[data-testid="stSidebar"] { background: linear-gradient(180deg, #1e1b4b 0%, #312e81 100%); box-shadow: 4px 0 24px rgba(0,0,0,0.18); }
-[data-testid="stSidebar"] * { color: #e0e7ff; }
-[data-testid="stSidebar"] .stSelectbox div[data-baseweb="select"],
-[data-testid="stSidebar"] input { background: rgba(255,255,255,0.95) !important; color: #1e1b4b !important; font-weight: 600; border-radius: 8px; }
-[data-testid="stSidebar"] .stRadio > div { background: rgba(255,255,255,0.95) !important; border-radius: 8px; padding: 0.5rem !important; margin: 0.5rem 0 !important; }
-[data-testid="stSidebar"] .stRadio label { color: #1e1b4b !important; font-weight: 600 !important; font-size: 0.9rem !important; }
-[data-testid="stSidebar"] .stRadio input[type="radio"] { accent-color: #7c3aed !important; }
-[data-testid="stSidebar"] .stExpander { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; margin-bottom: 1rem; overflow: hidden; }
-[data-testid="stSidebar"] .stExpander summary { color: #fff !important; font-weight: 700 !important; font-size: 1rem !important; padding: 0.8rem 1rem !important; background: rgba(255,255,255,0.08); }
-[data-testid="stSidebar"] .stExpander .streamlit-expanderContent { padding: 1rem !important; }
-div[data-testid="stTextInput"] input, div[data-testid="stNumberInput"] input {
-    border-radius: 10px !important; border: 1px solid #e2e8f0 !important;
-    padding: 0.65rem 0.9rem !important; font-size: 0.95rem !important; background: #f8fafc !important; transition: all 0.2s;
+
+h1, h2, h3, h4, h5, h6 {
+    color: #0F172A !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.02em;
 }
-div[data-testid="stTextInput"] input:focus, div[data-testid="stNumberInput"] input:focus {
-    border-color: #7c3aed !important; box-shadow: 0 0 0 3px rgba(124,58,237,0.12) !important; background: white !important;
+
+p, li, span, label {
+    color: #334155;
 }
-div.stButton > button[kind="primary"], div.stButton > button[data-testid="baseButton-primary"] {
-    background-color: #7c3aed !important; border-color: #7c3aed !important; color: white !important;
-    border-radius: 8px; font-weight: 600; transition: all 0.2s ease;
+
+/* Block Container */
+.block-container {
+    max-width: 100% !important;
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
 }
-div.stButton > button[kind="primary"]:hover { background-color: #6d28d9 !important; transform: translateY(-1px); }
-.metric-card { background: linear-gradient(135deg, #fff 0%, #f5f3ff 100%); padding: 1.25rem 1.5rem; border-radius: 14px; border: 1px solid #ddd6fe; box-shadow: 0 4px 14px rgba(124,58,237,0.08); }
-.metric-label { font-size: 0.75rem; font-weight: 700; color: #7c3aed; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.35rem; }
-.metric-value { font-size: 1.7rem; font-weight: 700; color: #1e1b4b; font-family: 'DM Mono', monospace; line-height: 1.1; }
-.status-banner { padding: 0.9rem 1.5rem; border-radius: 12px; font-weight: 700; font-size: 1rem; text-align: center; margin: 1.25rem 0; }
-.status-pass { background: #d1fae5; border: 2px solid #059669; color: #065f46; }
-.status-fail { background: #fee2e2; border: 2px solid #dc2626; color: #991b1b; }
-.input-section { background: white; padding: 2rem; border-radius: 16px; border-left: 4px solid #7c3aed; box-shadow: 0 8px 32px rgba(0,0,0,0.05); margin-bottom: 2rem; }
+
+/* Sidebar Styling */
+section[data-testid="stSidebar"] {
+    background-color: #0F172A !important;
+    border-right: 1px solid #1E293B;
+}
+
+section[data-testid="stSidebar"] > div {
+    background-color: #0F172A !important;
+}
+
+section[data-testid="stSidebar"] h1, 
+section[data-testid="stSidebar"] h2, 
+section[data-testid="stSidebar"] h3,
+section[data-testid="stSidebar"] .stMarkdown {
+    color: #F8FAFC !important;
+}
+
+section[data-testid="stSidebar"] .stExpander {
+    background-color: #1E293B !important;
+    border: 1px solid #334155 !important;
+    border-radius: 8px !important;
+    margin-bottom: 1rem !important;
+}
+
+section[data-testid="stSidebar"] .stExpander summary {
+    color: #F8FAFC !important;
+    font-weight: 600 !important;
+}
+
+section[data-testid="stSidebar"] .stExpander summary span {
+    color: #F8FAFC !important;
+}
+
+section[data-testid="stSidebar"] .stExpander .streamlit-expanderContent {
+    background-color: #1E293B !important;
+    padding: 1rem !important;
+}
+
+/* Sidebar Inputs */
+section[data-testid="stSidebar"] div[data-testid="stTextInput"] input,
+section[data-testid="stSidebar"] div[data-testid="stNumberInput"] input,
+section[data-testid="stSidebar"] div[data-baseweb="select"] > div {
+    background-color: #0F172A !important;
+    border: 1px solid #334155 !important;
+    color: #F8FAFC !important;
+    border-radius: 6px !important;
+}
+
+section[data-testid="stSidebar"] div[data-testid="stTextInput"] input:focus,
+section[data-testid="stSidebar"] div[data-testid="stNumberInput"] input:focus,
+section[data-testid="stSidebar"] div[data-baseweb="select"]:focus-within > div {
+    border-color: #3B82F6 !important;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2) !important;
+}
+
+section[data-testid="stSidebar"] .stRadio > div {
+    background-color: #0F172A !important;
+    border: 1px solid #334155 !important;
+    border-radius: 6px !important;
+    padding: 0.5rem !important;
+    margin: 0.5rem 0 !important;
+}
+
+section[data-testid="stSidebar"] .stRadio label {
+    color: #F8FAFC !important;
+    font-weight: 500 !important;
+    font-size: 0.9rem !important;
+}
+
+section[data-testid="stSidebar"] .stRadio input[type="radio"] {
+    accent-color: #3B82F6 !important;
+}
+
+/* Main Area Inputs */
+div[data-testid="stTextInput"] input, 
+div[data-testid="stNumberInput"] input,
+div[data-baseweb="select"] > div {
+    border-radius: 6px !important; 
+    border: 1px solid #CBD5E1 !important;
+    background-color: #FFFFFF !important;
+    transition: all 0.2s ease;
+}
+
+div[data-testid="stTextInput"] input:focus, 
+div[data-testid="stNumberInput"] input:focus,
+div[data-baseweb="select"]:focus-within > div {
+    border-color: #2563EB !important; 
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important; 
+}
+
+/* Buttons */
+.stButton > button {
+    border-radius: 6px !important;
+    font-weight: 500 !important;
+    transition: all 0.15s ease !important;
+}
+
+.stButton > button[kind="primary"], 
+.stButton > button[data-testid="baseButton-primary"] {
+    background-color: #2563EB !important; 
+    border: 1px solid #2563EB !important; 
+    color: #FFFFFF !important;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+}
+
+.stButton > button[kind="primary"]:hover, 
+.stButton > button[data-testid="baseButton-primary"]:hover {
+    background-color: #1D4ED8 !important; 
+    border-color: #1D4ED8 !important;
+}
+
+.stButton > button[kind="secondary"],
+.stButton > button[data-testid="baseButton-secondary"] {
+    background-color: #FFFFFF !important;
+    border: 1px solid #CBD5E1 !important;
+    color: #0F172A !important;
+}
+
+.stButton > button[kind="secondary"]:hover {
+    background-color: #F1F5F9 !important;
+    border-color: #94A3B8 !important;
+}
+
+/* Metric Cards */
+.metric-card { 
+    background-color: #FFFFFF; 
+    padding: 1.5rem; 
+    border-radius: 10px; 
+    border: 1px solid #E2E8F0; 
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+    height: 100%;
+}
+
+.metric-card:hover {
+    border-color: #CBD5E1;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.metric-label { 
+    font-size: 0.75rem; 
+    font-weight: 600; 
+    color: #64748B; 
+    text-transform: uppercase; 
+    letter-spacing: 0.05em; 
+    margin-bottom: 0.75rem; 
+}
+
+.metric-value { 
+    font-size: 1.75rem; 
+    font-weight: 700; 
+    color: #0F172A; 
+    font-variant-numeric: tabular-nums; 
+    line-height: 1.2; 
+}
+
+/* Status Banners */
+.status-banner { 
+    padding: 1rem 1.5rem; 
+    border-radius: 8px; 
+    font-weight: 600; 
+    font-size: 0.95rem; 
+    text-align: center; 
+    margin: 1.5rem 0; 
+    border: 1px solid transparent;
+}
+
+.status-pass { 
+    background-color: #ECFDF5; 
+    border-color: #A7F3D0; 
+    color: #065F46; 
+}
+
+.status-fail { 
+    background-color: #FEF2F2; 
+    border-color: #FECACA; 
+    color: #991B1B; 
+}
+
+/* Sections */
+.input-section { 
+    background-color: #FFFFFF; 
+    padding: 2rem; 
+    border-radius: 12px; 
+    border: 1px solid #E2E8F0; 
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05); 
+    margin-bottom: 2rem; 
+}
+
+.input-section h5 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #0F172A;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #F1F5F9;
+}
+
+/* Dataframe overrides */
+[data-testid="stDataFrame"] {
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Alerts */
+.stAlert {
+    border-radius: 8px;
+    border: 1px solid #E2E8F0;
+}
+
+/* Horizontal Rules */
+hr {
+    border-top: 1px solid #E2E8F0 !important;
+    margin: 2rem 0 !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -1252,7 +1463,7 @@ with st.sidebar:
 
             if st.session_state.income_sources:
                 st.dataframe(pd.DataFrame(st.session_state.income_sources), hide_index=True)
-                if st.button("Clear All Sources"):
+                if st.button("Clear All Sources", type="secondary"):
                     st.session_state.income_sources = []
                     st.rerun()
                 gross_income = sum(x['Amount'] for x in st.session_state.income_sources)
@@ -1322,7 +1533,7 @@ with st.sidebar:
                         st.rerun()
 
     st.markdown("---")
-    if st.button("🔄 Reset All Data", type="primary", use_container_width=True):
+    if st.button("🔄 Reset All Data", type="secondary", use_container_width=True):
         for k in ['loans', 'income_sources', 'fmv_sources', 'custom_scenarios']:
             st.session_state[k] = []
         for k in ['loan_id_counter', 'fmv_id_counter']:
@@ -1674,4 +1885,3 @@ else:
         "👋 Add facilities using the form above to begin analysis. "
         "Ensure Income and Collateral configurations are set in the sidebar."
     )
-
