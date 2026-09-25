@@ -38,81 +38,52 @@ def login_ui():
         background: linear-gradient(135deg, #F1F5F9 0%, #E2E8F0 100%) !important;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
     }
-    .block-container {
-        max-width: 100% !important;
-        padding: 0 !important;
-        margin: 0 !important;
-    }
+    .block-container { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
     [data-testid="stAppViewContainer"] > section > div {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        min-height: 100vh !important;
-        padding: 2rem 1rem !important;
+        display: flex !important; align-items: center !important; justify-content: center !important;
+        min-height: 100vh !important; padding: 2rem 1rem !important;
     }
-    [data-testid="stHorizontalBlock"] {
-        padding: 0 !important;
-        gap: 0 !important;
-    }
+    [data-testid="stHorizontalBlock"] { padding: 0 !important; gap: 0 !important; }
     [data-testid="stHorizontalBlock"] > div:nth-child(2) > div {
-        background: #FFFFFF !important;
-        border-radius: 12px !important;
-        border: 1px solid #E2E8F0 !important;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
-        padding: 0 !important;
-        overflow: hidden !important;
-        max-width: 440px !important;
-        margin: 0 auto !important;
+        background: #FFFFFF !important; border-radius: 12px !important; border: 1px solid #E2E8F0 !important;
+        box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04) !important;
+        padding: 0 !important; overflow: hidden !important; max-width: 440px !important; margin: 0 auto !important;
     }
-    .login-header {
-        background-color: #0F172A;
-        padding: 2.5rem 2rem;
-        text-align: center;
-        border-bottom: 3px solid #2563EB;
-    }
-    .login-header .logo-icon { font-size: 2.5rem; display: block; margin-bottom: 1rem; position: relative; z-index: 1; }
-    .login-header .app-title { font-size: 1.35rem; font-weight: 700; color: #FFFFFF; letter-spacing: -0.02em; margin-bottom: 0.25rem; position: relative; z-index: 1; }
-    .login-header .app-sub { font-size: 0.8rem; color: #94A3B8; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; position: relative; z-index: 1; }
+    .login-header { background-color: #0F172A; padding: 2.5rem 2rem; text-align: center; border-bottom: 3px solid #2563EB; }
+    .login-header .logo-icon { font-size: 2.5rem; display: block; margin-bottom: 1rem; }
+    .login-header .app-title { font-size: 1.35rem; font-weight: 700; color: #FFFFFF; letter-spacing: -0.02em; margin-bottom: 0.25rem; }
+    .login-header .app-sub { font-size: 0.8rem; color: #94A3B8; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; }
     .login-body-area { padding: 2rem 2rem 1rem; }
     .login-body-area .welcome-title { font-size: 1.25rem; font-weight: 600; color: #0F172A; margin-bottom: 0.5rem; }
     .login-body-area .welcome-sub { font-size: 0.875rem; color: #64748B; line-height: 1.5; margin-bottom: 1.5rem; }
     .field-label { display: block; font-size: 0.8rem; font-weight: 600; color: #334155; margin-bottom: 0.4rem; margin-top: 1.2rem; }
     div[data-testid="stTextInput"] > div > div {
-        background: #F8FAFC !important; border: 1px solid #CBD5E1 !important;
-        border-radius: 6px !important; transition: all 0.2s ease;
+        background: #F8FAFC !important; border: 1px solid #CBD5E1 !important; border-radius: 6px !important; transition: all 0.2s ease;
     }
     div[data-testid="stTextInput"] > div > div:focus-within {
-        border-color: #2563EB !important; background: #FFFFFF !important;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+        border-color: #2563EB !important; background: #FFFFFF !important; box-shadow: 0 0 0 3px rgba(37,99,235,0.1) !important;
     }
     div[data-testid="stTextInput"] > div > div > input {
-        background: transparent !important; border: none !important;
-        color: #0F172A !important; font-size: 0.95rem !important; padding: 0.75rem 0.9rem !important;
+        background: transparent !important; border: none !important; color: #0F172A !important;
+        font-size: 0.95rem !important; padding: 0.75rem 0.9rem !important;
     }
     div[data-testid="stTextInput"] > div > div > input::placeholder { color: #94A3B8 !important; }
     div[data-testid="stTextInput"] label { display: none !important; }
     div.stButton > button {
-        width: 100% !important;
-        background: #2563EB !important;
-        color: #FFFFFF !important; border: 1px solid #2563EB !important; border-radius: 6px !important;
-        font-weight: 600 !important; font-size: 0.95rem !important;
-        padding: 0.75rem 1.5rem !important; margin-top: 1.5rem !important;
-        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
-        transition: all 0.15s ease !important;
+        width: 100% !important; background: #2563EB !important; color: #FFFFFF !important;
+        border: 1px solid #2563EB !important; border-radius: 6px !important; font-weight: 600 !important;
+        font-size: 0.95rem !important; padding: 0.75rem 1.5rem !important; margin-top: 1.5rem !important;
+        box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05) !important; transition: all 0.15s ease !important;
     }
     div.stButton > button:hover { background: #1D4ED8 !important; border-color: #1D4ED8 !important; }
     .login-error-box {
-        background: #FEF2F2; border: 1px solid #FECACA; border-radius: 6px;
-        padding: 0.75rem 1rem; margin-top: 1rem; font-size: 0.85rem;
-        color: #991B1B; font-weight: 500; display: flex; gap: 0.5rem; align-items: center;
+        background: #FEF2F2; border: 1px solid #FECACA; border-radius: 6px; padding: 0.75rem 1rem;
+        margin-top: 1rem; font-size: 0.85rem; color: #991B1B; font-weight: 500;
+        display: flex; gap: 0.5rem; align-items: center;
     }
-    .login-footer { 
-        text-align: center; 
-        padding: 1.25rem 2rem; 
-        font-size: 0.75rem; 
-        color: #94A3B8; 
-        background-color: #F8FAFC;
-        border-top: 1px solid #E2E8F0; 
+    .login-footer {
+        text-align: center; padding: 1.25rem 2rem; font-size: 0.75rem; color: #94A3B8;
+        background-color: #F8FAFC; border-top: 1px solid #E2E8F0;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -135,37 +106,22 @@ def login_ui():
         """, unsafe_allow_html=True)
 
         st.markdown('<span class="field-label">Username</span>', unsafe_allow_html=True)
-        username = st.text_input(
-            "u",
-            placeholder="Enter your username",
-            key="_login_u",
-            label_visibility="collapsed",
-            autocomplete="username"
-        )
+        username = st.text_input("u", placeholder="Enter your username", key="_login_u",
+                                 label_visibility="collapsed", autocomplete="username")
 
         st.markdown('<span class="field-label">Password</span>', unsafe_allow_html=True)
-        password = st.text_input(
-            "p",
-            placeholder="Enter your password",
-            type="password",
-            key="_login_p",
-            label_visibility="collapsed",
-            autocomplete="current-password"
-        )
+        password = st.text_input("p", placeholder="Enter your password", type="password", key="_login_p",
+                                 label_visibility="collapsed", autocomplete="current-password")
 
         clicked = st.button("Sign In", key="_login_btn", use_container_width=True)
 
         err = st.session_state.get("_login_error", "")
         if err:
-            st.markdown(
-                '<div class="login-error-box"><span>⚠️</span><span>{}</span></div>'.format(err),
-                unsafe_allow_html=True
-            )
+            st.markdown('<div class="login-error-box"><span>⚠️</span><span>{}</span></div>'.format(err),
+                        unsafe_allow_html=True)
 
-        st.markdown(
-            '<div class="login-footer">Secured connection · Institutional use only · v2.4.1</div>',
-            unsafe_allow_html=True
-        )
+        st.markdown('<div class="login-footer">Secured connection · Institutional use only · v2.5.0</div>',
+                    unsafe_allow_html=True)
 
     if clicked:
         u = str(username).strip()
@@ -199,259 +155,242 @@ if not st.session_state["authenticated"]:
     st.stop()
 
 # ==========================================
-# GLOBAL STYLES
+# GLOBAL STYLES  (FIXED CONTRAST + NEW DESIGN)
 # ==========================================
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-/* Global Resets & Typography */
 * { box-sizing: border-box; }
 #MainMenu, footer, header { visibility: hidden; }
 
-html, body, [class*="css"] {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+html, body, [class*="css"] { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+
+.stApp { background-color: #F6F8FB !important; color: #0F172A; }
+.block-container { max-width: 100% !important; padding: 1.75rem 2.25rem 3rem !important; }
+
+h1, h2, h3, h4, h5, h6 { color: #0F172A !important; font-weight: 700 !important; letter-spacing: -0.015em; }
+p { color: #334155; }
+hr { border-color: #E5EAF1 !important; margin: 1.75rem 0 !important; }
+
+/* =====================================================
+   SIDEBAR — DARK TERMINAL (FULLY READABLE)
+   ===================================================== */
+section[data-testid="stSidebar"],
+section[data-testid="stSidebar"] > div,
+div[data-testid="stSidebarContent"] {
+    background: #0D1526 !important;
 }
 
-.stApp {
-    background-color: #F8FAFC !important;
-    color: #0F172A;
+/* --- Master text-visibility rules (fixes invisible labels) --- */
+section[data-testid="stSidebar"] p,
+section[data-testid="stSidebar"] li,
+section[data-testid="stSidebar"] h1, section[data-testid="stSidebar"] h2,
+section[data-testid="stSidebar"] h3, section[data-testid="stSidebar"] h4,
+section[data-testid="stSidebar"] h5, section[data-testid="stSidebar"] h6,
+section[data-testid="stSidebar"] label,
+section[data-testid="stSidebar"] span,
+section[data-testid="stSidebar"] small,
+section[data-testid="stSidebar"] .stMarkdown,
+section[data-testid="stSidebar"] .stCaption,
+section[data-testid="stSidebar"] div[data-testid="stWidgetLabel"],
+section[data-testid="stSidebar"] div[data-testid="stWidgetLabel"] p,
+section[data-testid="stSidebar"] div[data-testid="stWidgetLabel"] span,
+section[data-testid="stSidebar"] div[data-testid="stWidgetLabel"] label {
+    color: #D7E1F0 !important;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    color: #0F172A !important;
-    font-weight: 600 !important;
-    letter-spacing: -0.02em;
-}
+/* --- Brand header --- */
+.sb-brand { display: flex; align-items: center; gap: 0.7rem; padding: 0.25rem 0.25rem 1.1rem;
+            border-bottom: 1px solid #22304A; margin-bottom: 1.1rem; }
+.sb-logo { width: 40px; height: 40px; flex: none; border-radius: 10px; display: flex; align-items: center;
+           justify-content: center; font-size: 1.2rem; background: linear-gradient(135deg, #2563EB, #1D4ED8);
+           box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35); }
+section[data-testid="stSidebar"] .sb-title { color: #F8FAFC !important; font-size: 0.95rem; font-weight: 700; line-height: 1.2; }
+section[data-testid="stSidebar"] .sb-sub { color: #7C93B8 !important; font-size: 0.66rem; font-weight: 600;
+           text-transform: uppercase; letter-spacing: 0.12em; margin-top: 0.15rem; }
 
-p, li, span, label {
-    color: #334155;
-}
-
-/* Block Container */
-.block-container {
-    max-width: 100% !important;
-    padding-top: 2rem !important;
-    padding-bottom: 2rem !important;
-}
-
-/* Sidebar Styling */
-section[data-testid="stSidebar"] {
-    background-color: #0F172A !important;
-    border-right: 1px solid #1E293B;
-}
-
-section[data-testid="stSidebar"] > div {
-    background-color: #0F172A !important;
-}
-
-section[data-testid="stSidebar"] h1, 
-section[data-testid="stSidebar"] h2, 
-section[data-testid="stSidebar"] h3,
-section[data-testid="stSidebar"] .stMarkdown {
-    color: #F8FAFC !important;
-}
-
+/* --- Expanders as cards --- */
+section[data-testid="stSidebar"] details[data-testid="stExpander"],
 section[data-testid="stSidebar"] .stExpander {
-    background-color: #1E293B !important;
-    border: 1px solid #334155 !important;
-    border-radius: 8px !important;
-    margin-bottom: 1rem !important;
+    background: #111C33 !important; border: 1px solid #22304A !important;
+    border-radius: 10px !important; margin-bottom: 0.9rem !important; overflow: hidden;
 }
-
+section[data-testid="stSidebar"] details summary,
 section[data-testid="stSidebar"] .stExpander summary {
-    color: #F8FAFC !important;
-    font-weight: 600 !important;
+    background: #182642 !important; color: #F1F5F9 !important;
+    font-weight: 600 !important; padding: 0.7rem 1rem !important;
+}
+section[data-testid="stSidebar"] details summary span,
+section[data-testid="stSidebar"] details summary p,
+section[data-testid="stSidebar"] details summary div,
+section[data-testid="stSidebar"] .stExpander summary span { color: #F1F5F9 !important; }
+section[data-testid="stSidebar"] details summary svg { color: #7C93B8 !important; }
+section[data-testid="stSidebar"] details > div,
+section[data-testid="stSidebar"] div[data-testid="stExpanderContent"],
+section[data-testid="stSidebar"] .streamlit-expanderContent {
+    background: transparent !important; border-top: 1px solid #22304A !important; padding: 1rem !important;
 }
 
-section[data-testid="stSidebar"] .stExpander summary span {
-    color: #F8FAFC !important;
-}
-
-section[data-testid="stSidebar"] .stExpander .streamlit-expanderContent {
-    background-color: #1E293B !important;
-    padding: 1rem !important;
-}
-
-/* Sidebar Inputs */
-section[data-testid="stSidebar"] div[data-testid="stTextInput"] input,
-section[data-testid="stSidebar"] div[data-testid="stNumberInput"] input,
+/* --- Inputs --- */
+section[data-testid="stSidebar"] input,
+section[data-testid="stSidebar"] textarea,
 section[data-testid="stSidebar"] div[data-baseweb="select"] > div {
-    background-color: #0F172A !important;
-    border: 1px solid #334155 !important;
-    color: #F8FAFC !important;
-    border-radius: 6px !important;
+    background-color: #0A101F !important; border: 1px solid #263650 !important;
+    color: #F1F5F9 !important; border-radius: 8px !important;
 }
-
-section[data-testid="stSidebar"] div[data-testid="stTextInput"] input:focus,
-section[data-testid="stSidebar"] div[data-testid="stNumberInput"] input:focus,
+section[data-testid="stSidebar"] input:focus,
+section[data-testid="stSidebar"] textarea:focus,
 section[data-testid="stSidebar"] div[data-baseweb="select"]:focus-within > div {
-    border-color: #3B82F6 !important;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2) !important;
+    border-color: #3B82F6 !important; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18) !important;
+}
+section[data-testid="stSidebar"] input::placeholder,
+section[data-testid="stSidebar"] textarea::placeholder { color: #5B6B84 !important; opacity: 1; }
+section[data-testid="stSidebar"] div[data-baseweb="select"] span { color: #F1F5F9 !important; }
+section[data-testid="stSidebar"] div[data-testid="stNumberInput"] button {
+    color: #8CA3C7 !important; background: transparent !important;
 }
 
-section[data-testid="stSidebar"] .stRadio > div {
-    background-color: #0F172A !important;
-    border: 1px solid #334155 !important;
-    border-radius: 6px !important;
-    padding: 0.5rem !important;
-    margin: 0.5rem 0 !important;
+/* --- Radio / checkbox / toggle --- */
+section[data-testid="stSidebar"] div[role="radiogroup"] {
+    background: #0A101F !important; border: 1px solid #263650 !important;
+    border-radius: 8px !important; padding: 0.4rem !important;
+}
+section[data-testid="stSidebar"] div[role="radiogroup"] label span { color: #D7E1F0 !important; }
+section[data-testid="stSidebar"] input[type="radio"],
+section[data-testid="stSidebar"] input[type="checkbox"] { accent-color: #3B82F6 !important; }
+
+/* --- Multiselect tags --- */
+section[data-testid="stSidebar"] div[data-baseweb="tag"],
+section[data-testid="stSidebar"] div[data-baseweb="tag"] * {
+    background: #1D2C49 !important; color: #D7E1F0 !important; border-radius: 6px !important;
 }
 
-section[data-testid="stSidebar"] .stRadio label {
-    color: #F8FAFC !important;
-    font-weight: 500 !important;
-    font-size: 0.9rem !important;
+/* --- Forms & alerts in sidebar --- */
+section[data-testid="stSidebar"] form {
+    background: #0E1830 !important; border: 1px solid #22304A !important;
+    border-radius: 10px !important; padding: 1rem !important;
+}
+section[data-testid="stSidebar"] .stAlert,
+section[data-testid="stSidebar"] .stAlert * {
+    background: #16233C !important; color: #D7E1F0 !important; border: 1px solid #2A3A55 !important;
 }
 
-section[data-testid="stSidebar"] .stRadio input[type="radio"] {
-    accent-color: #3B82F6 !important;
-}
-
-/* Main Area Inputs */
-div[data-testid="stTextInput"] input, 
-div[data-testid="stNumberInput"] input,
-div[data-baseweb="select"] > div {
-    border-radius: 6px !important; 
-    border: 1px solid #CBD5E1 !important;
-    background-color: #FFFFFF !important;
-    transition: all 0.2s ease;
-}
-
-div[data-testid="stTextInput"] input:focus, 
-div[data-testid="stNumberInput"] input:focus,
-div[data-baseweb="select"]:focus-within > div {
-    border-color: #2563EB !important; 
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important; 
-}
-
-/* Buttons */
-.stButton > button {
-    border-radius: 6px !important;
-    font-weight: 500 !important;
+/* --- Sidebar buttons --- */
+section[data-testid="stSidebar"] .stButton > button {
+    border-radius: 8px !important; font-weight: 600 !important; font-size: 0.85rem !important;
     transition: all 0.15s ease !important;
 }
+section[data-testid="stSidebar"] .stButton > button[kind="primary"],
+section[data-testid="stSidebar"] .stButton > button[data-testid="baseButton-primary"] {
+    background: #2563EB !important; border: 1px solid #2563EB !important; color: #FFFFFF !important;
+}
+section[data-testid="stSidebar"] .stButton > button[kind="primary"]:hover { background: #1D4ED8 !important; }
+section[data-testid="stSidebar"] .stButton > button[kind="secondary"],
+section[data-testid="stSidebar"] .stButton > button[data-testid="baseButton-secondary"] {
+    background: #16233C !important; border: 1px solid #2A3A55 !important; color: #D7E1F0 !important;
+}
+section[data-testid="stSidebar"] .stButton > button[kind="secondary"]:hover { background: #1D2C49 !important; }
+section[data-testid="stSidebar"] .stButton > button span { color: inherit !important; }
 
-.stButton > button[kind="primary"], 
-.stButton > button[data-testid="baseButton-primary"] {
-    background-color: #2563EB !important; 
-    border: 1px solid #2563EB !important; 
-    color: #FFFFFF !important;
+/* --- Sidebar lists (income / collateral) --- */
+.sb-list { background: #0A101F; border: 1px solid #263650; border-radius: 8px; overflow: hidden; margin: 0.4rem 0 0.6rem; }
+.sb-list-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.7rem;
+                border-bottom: 1px solid #1B2942; font-size: 0.8rem; }
+.sb-list-item:last-child { border-bottom: none; }
+.sb-li-dot { width: 6px; height: 6px; border-radius: 50%; background: #3B82F6; flex: none; }
+.sb-li-dot.dot-green { background: #10B981; }
+section[data-testid="stSidebar"] .sb-li-name { color: #D7E1F0 !important; flex: 1; overflow: hidden;
+                text-overflow: ellipsis; white-space: nowrap; }
+section[data-testid="stSidebar"] .sb-li-val { color: #F8FAFC !important; font-weight: 600; font-variant-numeric: tabular-nums; }
+.sb-list-total { text-align: right; font-size: 0.75rem; color: #7C93B8; margin-bottom: 0.6rem; }
+section[data-testid="stSidebar"] .sb-list-total { color: #7C93B8 !important; }
+
+/* --- Sidebar user card --- */
+.sb-user { display: flex; align-items: center; gap: 0.65rem; background: #111C33; border: 1px solid #22304A;
+           border-radius: 10px; padding: 0.6rem 0.75rem; margin: 0.4rem 0 0.7rem; }
+.sb-avatar { width: 32px; height: 32px; flex: none; border-radius: 50%; display: flex; align-items: center;
+             justify-content: center; background: linear-gradient(135deg, #2563EB, #7C3AED);
+             color: #FFFFFF; font-size: 0.75rem; font-weight: 700; }
+section[data-testid="stSidebar"] .sb-user-name { color: #F1F5F9 !important; font-size: 0.85rem; font-weight: 600; line-height: 1.2; }
+section[data-testid="stSidebar"] .sb-user-role { color: #7C93B8 !important; font-size: 0.68rem; }
+
+section[data-testid="stSidebar"] hr { border-color: #22304A !important; margin: 1.1rem 0 !important; }
+
+/* =====================================================
+   MAIN AREA
+   ===================================================== */
+.app-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+              padding-bottom: 1.15rem; border-bottom: 1px solid #E5EAF1; margin-bottom: 1.6rem; }
+.ah-left { display: flex; align-items: center; gap: 0.9rem; }
+.ah-icon { width: 46px; height: 46px; flex: none; border-radius: 12px; display: flex; align-items: center;
+           justify-content: center; font-size: 1.35rem; background: linear-gradient(135deg, #1D4ED8, #2563EB);
+           box-shadow: 0 6px 16px rgba(37, 99, 235, 0.28); }
+.ah-title { font-size: 1.3rem; font-weight: 800; color: #0F172A; letter-spacing: -0.02em; line-height: 1.2; }
+.ah-sub { font-size: 0.84rem; color: #64748B; margin-top: 0.15rem; }
+.ah-right { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: flex-end; }
+.chip { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.38rem 0.75rem; border-radius: 999px;
+        background: #FFFFFF; border: 1px solid #E2E8F0; font-size: 0.75rem; font-weight: 600; color: #475569; }
+.chip-blue { background: #EFF6FF; border-color: #BFDBFE; color: #1D4ED8; }
+
+/* Panels */
+.panel { background: #FFFFFF; border: 1px solid #E5EAF1; border-radius: 14px; padding: 1.6rem 1.75rem;
+         margin-bottom: 1.6rem; box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04); }
+.panel-head { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.3rem; }
+.ph-icon { width: 36px; height: 36px; flex: none; border-radius: 10px; display: flex; align-items: center;
+           justify-content: center; font-size: 1.05rem; }
+.ph-blue { background: #EFF6FF; } .ph-green { background: #ECFDF5; } .ph-purple { background: #F5F3FF; }
+.ph-title { font-size: 1.05rem; font-weight: 700; color: #0F172A; line-height: 1.2; }
+.ph-sub { font-size: 0.78rem; color: #64748B; margin-top: 0.1rem; }
+
+/* Metric cards */
+.metric-card { background: #FFFFFF; border: 1px solid #E5EAF1; border-radius: 12px; padding: 1.1rem 1.25rem;
+               height: 100%; position: relative; overflow: hidden; transition: all 0.2s ease; }
+.metric-card:hover { border-color: #CBD5E1; box-shadow: 0 4px 10px rgba(16, 24, 40, 0.06); }
+.metric-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--mc, #2563EB); }
+.mc-blue { --mc: #2563EB; } .mc-green { --mc: #059669; } .mc-red { --mc: #DC2626; }
+.mc-amber { --mc: #D97706; } .mc-purple { --mc: #7C3AED; } .mc-slate { --mc: #475569; }
+.metric-label { font-size: 0.7rem; font-weight: 700; color: #64748B; text-transform: uppercase;
+                letter-spacing: 0.08em; margin-bottom: 0.55rem; }
+.metric-value { font-size: 1.55rem; font-weight: 700; color: #0F172A; font-variant-numeric: tabular-nums; line-height: 1.15; }
+
+/* Status banners */
+.status-banner { display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+                 padding: 0.9rem 1.4rem; border-radius: 10px; font-weight: 700; font-size: 0.92rem;
+                 letter-spacing: 0.02em; margin: 1.2rem 0; border: 1px solid transparent; }
+.status-pass { background: #ECFDF5; border-color: #A7F3D0; color: #047857; }
+.status-fail { background: #FEF2F2; border-color: #FECACA; color: #B91C1C; }
+
+/* Tables */
+.table-wrap { border: 1px solid #E5EAF1; border-radius: 10px; overflow: hidden; }
+.table-wrap [data-testid="stDataFrame"] { border: none !important; border-radius: 0 !important; }
+
+/* Main inputs */
+div[data-testid="stTextInput"] input,
+div[data-testid="stNumberInput"] input,
+div[data-baseweb="select"] > div {
+    border-radius: 8px !important; border: 1px solid #D7DFEA !important;
+    background-color: #FFFFFF !important; transition: all 0.2s ease;
+}
+div[data-testid="stTextInput"] input:focus,
+div[data-testid="stNumberInput"] input:focus,
+div[data-baseweb="select"]:focus-within > div {
+    border-color: #2563EB !important; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+}
+
+/* Main buttons */
+.stButton > button { border-radius: 8px !important; font-weight: 600 !important; transition: all 0.15s ease !important; }
+.stButton > button[kind="primary"], .stButton > button[data-testid="baseButton-primary"] {
+    background-color: #2563EB !important; border: 1px solid #2563EB !important; color: #FFFFFF !important;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
 }
-
-.stButton > button[kind="primary"]:hover, 
-.stButton > button[data-testid="baseButton-primary"]:hover {
-    background-color: #1D4ED8 !important; 
-    border-color: #1D4ED8 !important;
+.stButton > button[kind="primary"]:hover { background-color: #1D4ED8 !important; }
+.stButton > button[kind="secondary"], .stButton > button[data-testid="baseButton-secondary"] {
+    background-color: #FFFFFF !important; border: 1px solid #CBD5E1 !important; color: #0F172A !important;
 }
+.stButton > button[kind="secondary"]:hover { background-color: #F1F5F9 !important; }
 
-.stButton > button[kind="secondary"],
-.stButton > button[data-testid="baseButton-secondary"] {
-    background-color: #FFFFFF !important;
-    border: 1px solid #CBD5E1 !important;
-    color: #0F172A !important;
-}
-
-.stButton > button[kind="secondary"]:hover {
-    background-color: #F1F5F9 !important;
-    border-color: #94A3B8 !important;
-}
-
-/* Metric Cards */
-.metric-card { 
-    background-color: #FFFFFF; 
-    padding: 1.5rem; 
-    border-radius: 10px; 
-    border: 1px solid #E2E8F0; 
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
-    transition: all 0.2s ease;
-    height: 100%;
-}
-
-.metric-card:hover {
-    border-color: #CBD5E1;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-}
-
-.metric-label { 
-    font-size: 0.75rem; 
-    font-weight: 600; 
-    color: #64748B; 
-    text-transform: uppercase; 
-    letter-spacing: 0.05em; 
-    margin-bottom: 0.75rem; 
-}
-
-.metric-value { 
-    font-size: 1.75rem; 
-    font-weight: 700; 
-    color: #0F172A; 
-    font-variant-numeric: tabular-nums; 
-    line-height: 1.2; 
-}
-
-/* Status Banners */
-.status-banner { 
-    padding: 1rem 1.5rem; 
-    border-radius: 8px; 
-    font-weight: 600; 
-    font-size: 0.95rem; 
-    text-align: center; 
-    margin: 1.5rem 0; 
-    border: 1px solid transparent;
-}
-
-.status-pass { 
-    background-color: #ECFDF5; 
-    border-color: #A7F3D0; 
-    color: #065F46; 
-}
-
-.status-fail { 
-    background-color: #FEF2F2; 
-    border-color: #FECACA; 
-    color: #991B1B; 
-}
-
-/* Sections */
-.input-section { 
-    background-color: #FFFFFF; 
-    padding: 2rem; 
-    border-radius: 12px; 
-    border: 1px solid #E2E8F0; 
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05); 
-    margin-bottom: 2rem; 
-}
-
-.input-section h5 {
-    margin-top: 0;
-    margin-bottom: 1.5rem;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #0F172A;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid #F1F5F9;
-}
-
-/* Dataframe overrides */
-[data-testid="stDataFrame"] {
-    border: 1px solid #E2E8F0;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-/* Alerts */
-.stAlert {
-    border-radius: 8px;
-    border: 1px solid #E2E8F0;
-}
-
-/* Horizontal Rules */
-hr {
-    border-top: 1px solid #E2E8F0 !important;
-    margin: 2rem 0 !important;
-}
+.stAlert { border-radius: 10px !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -636,16 +575,9 @@ def run_portfolio_ltv(loans, fmv_sources):
         if exempt:
             results.append({
                 **loan,
-                'Max LTV%': None,
-                'Assigned FMV': 0.0,
-                'Pool FMV': 0.0,
-                'Total FMV': 0.0,
-                'LTV%': None,
-                'Pass_Status': True,
-                'Is_Unsecured': True,
-                'Collateral_Mode': mode,
-                'No_FMV_Error': False,
-                'Exempt_Reason': exempt_reason
+                'Max LTV%': None, 'Assigned FMV': 0.0, 'Pool FMV': 0.0, 'Total FMV': 0.0,
+                'LTV%': None, 'Pass_Status': True, 'Is_Unsecured': True,
+                'Collateral_Mode': mode, 'No_FMV_Error': False, 'Exempt_Reason': exempt_reason
             })
             continue
 
@@ -664,15 +596,9 @@ def run_portfolio_ltv(loans, fmv_sources):
 
         results.append({
             **loan,
-            'Max LTV%': max_ltv,
-            'Assigned FMV': assigned_fmv_val,
-            'Pool FMV': pool_fmv_val,
-            'Total FMV': total_alloc,
-            'LTV%': ltv_pct,
-            'Pass_Status': passes,
-            'Is_Unsecured': False,
-            'Collateral_Mode': mode,
-            'No_FMV_Error': no_fmv_error,
+            'Max LTV%': max_ltv, 'Assigned FMV': assigned_fmv_val, 'Pool FMV': pool_fmv_val,
+            'Total FMV': total_alloc, 'LTV%': ltv_pct, 'Pass_Status': passes,
+            'Is_Unsecured': False, 'Collateral_Mode': mode, 'No_FMV_Error': no_fmv_error,
             'Exempt_Reason': None
         })
 
@@ -756,7 +682,6 @@ def _pdf_safe_text(value):
 def _pdf_extract_bytes(pdf) -> bytes:
     errors = []
 
-    # Strategy 1
     try:
         result = pdf.output()
         if result is not None:
@@ -769,7 +694,6 @@ def _pdf_extract_bytes(pdf) -> bytes:
     except Exception as e:
         errors.append("Strategy 1 failed: {}: {}".format(type(e).__name__, e))
 
-    # Strategy 2
     try:
         result = pdf.output(dest='S')
         if result is not None:
@@ -787,7 +711,6 @@ def _pdf_extract_bytes(pdf) -> bytes:
     except Exception as e:
         errors.append("Strategy 2 failed: {}: {}".format(type(e).__name__, e))
 
-    # Strategy 3
     tmp_path = None
     try:
         tmp_fd, tmp_path = tempfile.mkstemp(suffix='.pdf')
@@ -815,7 +738,6 @@ def _pdf_extract_bytes(pdf) -> bytes:
             except Exception:
                 pass
 
-    # Strategy 4
     try:
         buf = io.BytesIO()
         pdf.output(buf)
@@ -858,14 +780,9 @@ class ReportPDF(FPDF):
 
             self.set_font('Helvetica', '', 9)
             self.set_text_color(90, 90, 90)
-            self.cell(
-                0,
-                5,
-                'Client: ' + self.client_name + '    |    Date: ' + self.date_str + '    |    Ref: ' + self.report_id,
-                0,
-                1,
-                'C'
-            )
+            self.cell(0, 5,
+                      'Client: ' + self.client_name + '    |    Date: ' + self.date_str + '    |    Ref: ' + self.report_id,
+                      0, 1, 'C')
 
             if self.generated_by:
                 self.cell(0, 5, 'Generated by: ' + self.generated_by, 0, 1, 'C')
@@ -937,7 +854,6 @@ def generate_integrated_pdf(client_name: str, report_data: dict) -> bytes:
 
     pdf = ReportPDF(client_name=client_name, report_id=report_id, generated_by=generated_by)
 
-    # Internal helpers
     def _ensure_space(needed):
         if pdf.get_y() + needed > pdf.h - 22:
             pdf.add_page()
@@ -1098,7 +1014,6 @@ def generate_integrated_pdf(client_name: str, report_data: dict) -> bytes:
         except Exception:
             return "N/A"
 
-    # ===== PAGE 1: EXEC SUMMARY =====
     pdf.add_page()
 
     _section('Executive Summary')
@@ -1141,106 +1056,49 @@ def generate_integrated_pdf(client_name: str, report_data: dict) -> bytes:
     eff_label = "Effective Income (Post-Stress)" if (enable_stress and include_dti) else "Effective Income (Baseline)"
 
     _summary_table([
-        {
-            'values': [
-                'Monthly Gross Income', money(gross_income),
-                eff_label, money(eff_income)
-            ]
-        },
-        {
-            'values': [
-                'Total Loan Exposure', money(total_exposure),
-                'Total Collateral FMV', total_fmv_txt
-            ]
-        },
-        {
-            'values': [
-                'Aggregate DTI Coverage', dti_coverage_txt,
-                'Aggregate LTV%', aggregate_ltv_txt
-            ]
-        },
-        {
-            'values': [
-                'DTI Status', dti_status_txt,
-                'LTV Status', ltv_status_txt
-            ],
-            'value_colors': {
-                1: dti_color,
-                3: ltv_color
-            }
-        },
-        {
-            'values': [
-                'DTI Income Shortfall', shortfall_txt,
-                'Weighted LTV', wtd_ltv_txt
-            ]
-        }
+        {'values': ['Monthly Gross Income', money(gross_income), eff_label, money(eff_income)]},
+        {'values': ['Total Loan Exposure', money(total_exposure), 'Total Collateral FMV', total_fmv_txt]},
+        {'values': ['Aggregate DTI Coverage', dti_coverage_txt, 'Aggregate LTV%', aggregate_ltv_txt]},
+        {'values': ['DTI Status', dti_status_txt, 'LTV Status', ltv_status_txt],
+         'value_colors': {1: dti_color, 3: ltv_color}},
+        {'values': ['DTI Income Shortfall', shortfall_txt, 'Weighted LTV', wtd_ltv_txt]}
     ])
 
     pdf.ln(3)
 
-    # ===== DTI SECTION =====
     if include_dti:
         _section('Debt-to-Income (DTI) Analysis')
 
         if enable_stress:
-            stress_rows = [
-                {
-                    'values': [
-                        _pdf_safe_text(scenario_name),
-                        "+{:.2f}%".format(stress_rate),
-                        "-{:.2f}%".format(stress_inc),
-                        money(eff_income)
-                    ]
-                }
-            ]
-            render_table(
-                [70, 40, 40, 40],
-                ['Scenario', 'Rate Shock', 'Income Shock', 'Effective Income'],
-                stress_rows,
-                aligns=['L', 'C', 'C', 'R'],
-                row_h=6,
-                font_size=8,
-                header_size=8,
-                zebra=False
-            )
+            stress_rows = [{
+                'values': [
+                    _pdf_safe_text(scenario_name),
+                    "+{:.2f}%".format(stress_rate),
+                    "-{:.2f}%".format(stress_inc),
+                    money(eff_income)
+                ]
+            }]
+            render_table([70, 40, 40, 40],
+                         ['Scenario', 'Rate Shock', 'Income Shock', 'Effective Income'],
+                         stress_rows, aligns=['L', 'C', 'C', 'R'],
+                         row_h=6, font_size=8, header_size=8, zebra=False)
             pdf.ln(3)
 
-        # Income sources
         income_rows = []
         if income_sources:
             for src in income_sources:
-                income_rows.append({
-                    'values': [
-                        _pdf_safe_text(src.get('Source', '')),
-                        money(src.get('Amount', 0))
-                    ]
-                })
+                income_rows.append({'values': [_pdf_safe_text(src.get('Source', '')), money(src.get('Amount', 0))]})
         else:
-            income_rows.append({
-                'values': ['Monthly Gross Income', money(gross_income)]
-            })
+            income_rows.append({'values': ['Monthly Gross Income', money(gross_income)]})
 
-        income_rows.append({
-            'values': ['Total Gross Income', money(gross_income)],
-            'bold': True,
-            'fill': True,
-            'fill_color': (226, 232, 243)
-        })
+        income_rows.append({'values': ['Total Gross Income', money(gross_income)],
+                            'bold': True, 'fill': True, 'fill_color': (226, 232, 243)})
 
-        render_table(
-            [120, 70],
-            ['Income Source', 'Amount (Rs.)'],
-            income_rows,
-            aligns=['L', 'R'],
-            row_h=6,
-            font_size=8,
-            header_size=8
-        )
+        render_table([120, 70], ['Income Source', 'Amount (Rs.)'], income_rows,
+                     aligns=['L', 'R'], row_h=6, font_size=8, header_size=8)
 
         pdf.ln(4)
 
-        # DTI waterfall
         dti_rows = []
         for _, row in df_dti_res.iterrows():
             status = "PASS" if bool(row['Pass_Status']) else "FAIL"
@@ -1259,19 +1117,13 @@ def generate_integrated_pdf(client_name: str, report_data: dict) -> bytes:
                 'cell_colors': {6: status_color}
             })
 
-        render_table(
-            [48, 26, 26, 28, 20, 20, 22],
-            ['Facility Type', 'Principal', 'Payment', 'Rem. Income', 'Act. Cov.', 'Req. Cov.', 'Status'],
-            dti_rows,
-            aligns=['L', 'R', 'R', 'R', 'R', 'R', 'C'],
-            row_h=6,
-            font_size=7,
-            header_size=7
-        )
+        render_table([48, 26, 26, 28, 20, 20, 22],
+                     ['Facility Type', 'Principal', 'Payment', 'Rem. Income', 'Act. Cov.', 'Req. Cov.', 'Status'],
+                     dti_rows, aligns=['L', 'R', 'R', 'R', 'R', 'R', 'C'],
+                     row_h=6, font_size=7, header_size=7)
 
         pdf.ln(3)
 
-    # ===== LTV SECTION =====
     if include_ltv:
         _section('Loan-to-Value (LTV) Analysis')
 
@@ -1288,22 +1140,11 @@ def generate_integrated_pdf(client_name: str, report_data: dict) -> bytes:
                     ]
                 })
 
-            coll_rows.append({
-                'values': ['', '', 'Total FMV', money0(total_fmv)],
-                'bold': True,
-                'fill': True,
-                'fill_color': (226, 232, 243)
-            })
+            coll_rows.append({'values': ['', '', 'Total FMV', money0(total_fmv)],
+                              'bold': True, 'fill': True, 'fill_color': (226, 232, 243)})
 
-            render_table(
-                [60, 45, 25, 60],
-                ['Property Reference', 'Owner', 'Type', 'FMV (Rs.)'],
-                coll_rows,
-                aligns=['L', 'L', 'C', 'R'],
-                row_h=6,
-                font_size=8,
-                header_size=8
-            )
+            render_table([60, 45, 25, 60], ['Property Reference', 'Owner', 'Type', 'FMV (Rs.)'],
+                         coll_rows, aligns=['L', 'L', 'C', 'R'], row_h=6, font_size=8, header_size=8)
 
             pdf.ln(4)
         else:
@@ -1361,20 +1202,13 @@ def generate_integrated_pdf(client_name: str, report_data: dict) -> bytes:
             'cell_colors': {6: agg_color}
         })
 
-        render_table(
-            [22, 46, 28, 28, 22, 22, 22],
-            ['A/C No.', 'Facility Type', 'Principal', 'Total FMV', 'LTV%', 'Max LTV%', 'Status'],
-            ltv_rows,
-            aligns=['L', 'L', 'R', 'R', 'R', 'R', 'C'],
-            row_h=6,
-            font_size=7,
-            header_size=7
-        )
+        render_table([22, 46, 28, 28, 22, 22, 22],
+                     ['A/C No.', 'Facility Type', 'Principal', 'Total FMV', 'LTV%', 'Max LTV%', 'Status'],
+                     ltv_rows, aligns=['L', 'L', 'R', 'R', 'R', 'R', 'C'],
+                     row_h=6, font_size=7, header_size=7)
 
         pdf.ln(3)
 
-        # ===== COLLATERAL NOTES (NEW) =====
-        # Notes for LTV Exempt (Override), Property Tie-up, and Dedicated Collateral Assignment
         collateral_notes = []
 
         fmv_lookup = {s['id']: s for s in fmv_sources if 'id' in s}
@@ -1411,7 +1245,6 @@ def generate_integrated_pdf(client_name: str, report_data: dict) -> bytes:
                     "[{}] {} - Dedicated collateral assigned: {}.".format(lid, lt, assigned_str)
                 )
 
-            # Also note tie-up explicitly when loan is NOT exempt via tie-up (i.e., collateral still required but tie-up added)
             if exempt_reason != 'tieup' and tied_ids and not exempt_reason:
                 tied_str = _plot_labels(tied_ids)
                 collateral_notes.append(
@@ -1432,8 +1265,6 @@ def generate_integrated_pdf(client_name: str, report_data: dict) -> bytes:
                 pdf.multi_cell(0, 4, _pdf_safe_text("  - " + note))
             pdf.ln(3)
 
-    # ===== (Notes & Disclaimer section removed) =====
-
     if pdf.page < 1:
         raise RuntimeError("PDF has no pages - content rendering failed.")
 
@@ -1441,10 +1272,18 @@ def generate_integrated_pdf(client_name: str, report_data: dict) -> bytes:
 
 
 # ==========================================
-# SIDEBAR
+# SIDEBAR  (REDESIGNED + READABLE)
 # ==========================================
 with st.sidebar:
-    st.markdown("## ⚙️ Configuration Panel")
+    st.markdown("""
+    <div class="sb-brand">
+        <div class="sb-logo">🏦</div>
+        <div>
+            <div class="sb-title">Analysis Engine</div>
+            <div class="sb-sub">DTI · LTV Credit Platform</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
     with st.expander("💰 Income & Stress Configuration (DTI)", expanded=True):
         inc_mode = st.radio("Income Entry Method", ["Single Total", "Multiple Sources"])
@@ -1456,14 +1295,22 @@ with st.sidebar:
             c1, c2 = st.columns([1.5, 1])
             src = c1.text_input("Income Source")
             amt = c2.number_input("Amount (Rs.)", min_value=0.0)
-            if st.button("➕ Add Source", type="primary"):
+            if st.button("➕ Add Source", type="primary", use_container_width=True):
                 if src.strip() and amt > 0:
                     st.session_state.income_sources.append({"Source": src.strip(), "Amount": amt})
                     st.rerun()
 
             if st.session_state.income_sources:
-                st.dataframe(pd.DataFrame(st.session_state.income_sources), hide_index=True)
-                if st.button("Clear All Sources", type="secondary"):
+                rows_html = "".join(
+                    "<div class='sb-list-item'><span class='sb-li-dot'></span>"
+                    "<span class='sb-li-name'>{}</span>"
+                    "<span class='sb-li-val'>Rs. {:,.0f}</span></div>".format(x['Source'], x['Amount'])
+                    for x in st.session_state.income_sources
+                )
+                st.markdown("<div class='sb-list'>" + rows_html + "</div>", unsafe_allow_html=True)
+                st.markdown("<div class='sb-list-total'>Gross Total: Rs. {:,.0f}</div>".format(
+                    sum(x['Amount'] for x in st.session_state.income_sources)), unsafe_allow_html=True)
+                if st.button("Clear All Sources", type="secondary", use_container_width=True):
                     st.session_state.income_sources = []
                     st.rerun()
                 gross_income = sum(x['Amount'] for x in st.session_state.income_sources)
@@ -1484,7 +1331,7 @@ with st.sidebar:
                 c_name = fc1.text_input("Scenario Name")
                 c_rate = fc2.number_input("Rate Shock (+%)", 0.0, 50.0, 2.0, step=0.5)
                 c_inc = st.number_input("Income Reduction (-%)", 0.0, 100.0, 10.0, step=5.0)
-                if st.form_submit_button("Save Scenario", type="primary"):
+                if st.form_submit_button("Save Scenario", type="primary", use_container_width=True):
                     if c_name:
                         st.session_state.custom_scenarios.append({"Name": c_name, "Rate": c_rate, "Income": c_inc})
                         st.rerun()
@@ -1504,7 +1351,7 @@ with st.sidebar:
         sb_fmv = st.number_input("Fair Market Value (Rs.)", min_value=0.0, step=50000.0)
         sb_coll_type = st.radio("Collateral Type", ["Property", "Vehicle"])
 
-        if st.button("Add Property", type="primary"):
+        if st.button("Add Property", type="primary", use_container_width=True):
             if sb_fmv > 0 and sb_plot.strip():
                 st.session_state.fmv_sources.append({
                     "id": _next_fmv_id(),
@@ -1516,14 +1363,21 @@ with st.sidebar:
                 st.rerun()
 
         if st.session_state.fmv_sources:
-            st.markdown("**Total FMV:** Rs. {:,.0f}".format(sum(s['Amount'] for s in st.session_state.fmv_sources)))
+            st.markdown("<div class='sb-list-total' style='text-align:left; margin-top:0.6rem;'>PORTFOLIO COLLATERAL — TOTAL FMV: Rs. {:,.0f}</div>".format(
+                sum(s['Amount'] for s in st.session_state.fmv_sources)), unsafe_allow_html=True)
             for src in st.session_state.fmv_sources:
-                col_a, col_b = st.columns([5, 1])
+                col_a, col_b = st.columns([6, 1])
                 with col_a:
-                    tag = "🚗 " if src.get('IsVehicle') else "🏠 "
-                    st.markdown("{} **{}** — Rs. {:,.0f}".format(tag, src['Plot'], src['Amount']))
+                    tag = "🚗" if src.get('IsVehicle') else "🏠"
+                    dot = "dot-green" if src.get('IsVehicle') else ""
+                    st.markdown(
+                        "<div class='sb-list-item'><span class='sb-li-dot {}'></span>"
+                        "<span class='sb-li-name'>{} {}</span>"
+                        "<span class='sb-li-val'>Rs. {:,.0f}</span></div>".format(dot, tag, src['Plot'], src['Amount']),
+                        unsafe_allow_html=True
+                    )
                 with col_b:
-                    if st.button("X", key="del_fmv_{}".format(src['id'])):
+                    if st.button("✕", key="del_fmv_{}".format(src['id']), type="secondary"):
                         st.session_state.fmv_sources = [s for s in st.session_state.fmv_sources if s['id'] != src['id']]
                         for loan in st.session_state.loans:
                             if src['id'] in loan.get('assigned_collateral_ids', []):
@@ -1541,106 +1395,145 @@ with st.sidebar:
         st.session_state['loan_type_counters'] = {}
         st.rerun()
 
+    _uname = st.session_state.get("auth_username", "user") or "user"
+    _initials = _uname[:2].upper()
+    st.markdown("""
+    <div class="sb-user">
+        <div class="sb-avatar">{init}</div>
+        <div>
+            <div class="sb-user-name">{name}</div>
+            <div class="sb-user-role">Credit Analyst · Signed in</div>
+        </div>
+    </div>
+    """.format(init=_initials, name=_uname), unsafe_allow_html=True)
+
+    if st.button("Sign Out", type="secondary", use_container_width=True, key="logout_btn"):
+        st.session_state["authenticated"] = False
+        st.session_state["auth_username"] = ""
+        st.rerun()
+
 # ==========================================
 # MAIN DASHBOARD
 # ==========================================
-st.title("🏦 Integrated DTI & LTV Analysis Engine")
-st.markdown("Unified credit assessment for Debt-to-Income and Loan-to-Value metrics.")
+st.markdown("""
+<div class="app-header">
+    <div class="ah-left">
+        <div class="ah-icon">🏦</div>
+        <div>
+            <div class="ah-title">Integrated DTI &amp; LTV Analysis Engine</div>
+            <div class="ah-sub">Unified credit assessment for Debt-to-Income and Loan-to-Value metrics</div>
+        </div>
+    </div>
+    <div class="ah-right">
+        <span class="chip chip-blue">👤 {user}</span>
+        <span class="chip">📅 {date}</span>
+    </div>
+</div>
+""".format(user=st.session_state.get("auth_username", "user"),
+           date=datetime.now().strftime("%d %b %Y")), unsafe_allow_html=True)
 
-with st.container():
-    st.markdown("<div class='input-section'><h5>➕ Add New Facility</h5>", unsafe_allow_html=True)
+st.markdown("""
+<div class="panel">
+    <div class="panel-head">
+        <div class="ph-icon ph-blue">➕</div>
+        <div>
+            <div class="ph-title">Add New Facility</div>
+            <div class="ph-sub">Configure loan parameters, DTI overrides and collateral linkage</div>
+        </div>
+    </div>
+""", unsafe_allow_html=True)
 
-    c1, c2, c3, c4 = st.columns([2, 1.5, 1, 1])
-    with c1:
-        l_type = st.selectbox("Facility Type", list(LOAN_CONFIG.keys()))
-    with c2:
-        l_amt = st.number_input("Principal Amount (Rs.)", step=10000.0, min_value=0.0)
-    with c3:
-        l_rate = st.number_input("Interest Rate (%)", value=12.0, step=0.25)
-    with c4:
-        l_ten = st.number_input("Tenure (Years)", value=DEFAULT_TENURE.get(l_type, 5), min_value=1)
+c1, c2, c3, c4 = st.columns([2, 1.5, 1, 1])
+with c1:
+    l_type = st.selectbox("Facility Type", list(LOAN_CONFIG.keys()))
+with c2:
+    l_amt = st.number_input("Principal Amount (Rs.)", step=10000.0, min_value=0.0)
+with c3:
+    l_rate = st.number_input("Interest Rate (%)", value=12.0, step=0.25)
+with c4:
+    l_ten = st.number_input("Tenure (Years)", value=DEFAULT_TENURE.get(l_type, 5), min_value=1)
 
-    st.markdown("#### DTI Parameters")
-    c_opt, c_btn = st.columns([3, 1])
-    with c_opt:
-        use_man = st.checkbox("Use Fixed Monthly Payment (Override EMI)")
-    man_emi = st.number_input("Fixed Monthly Payment (Rs.)", 0.0, step=1000.0) if use_man else 0.0
+st.markdown("##### DTI Parameters")
+c_opt, c_btn = st.columns([3, 1])
+with c_opt:
+    use_man = st.checkbox("Use Fixed Monthly Payment (Override EMI)")
+man_emi = st.number_input("Fixed Monthly Payment (Rs.)", 0.0, step=1000.0) if use_man else 0.0
 
-    st.markdown("#### LTV Parameters")
-    policy_dict = get_policy_dict()
-    max_ltv_sel = policy_dict.get(l_type)
-    is_hp = _is_hp_loan(l_type)
+st.markdown("##### LTV Parameters")
+policy_dict = get_policy_dict()
+max_ltv_sel = policy_dict.get(l_type)
+is_hp = _is_hp_loan(l_type)
 
-    override_ltv = False
-    coll_mode = "pool"
-    selected_colls = []
-    tie_up_colls = []
+override_ltv = False
+coll_mode = "pool"
+selected_colls = []
+tie_up_colls = []
 
-    if max_ltv_sel is not None:
-        override_ltv = st.checkbox("Override collateral requirement (LTV Exempt)")
-        if not override_ltv:
-            use_dedicated = st.checkbox("Assign dedicated collateral?")
-            coll_mode = "assigned" if use_dedicated else "pool"
-            if use_dedicated:
-                eligible = [s for s in st.session_state.fmv_sources if bool(s.get('IsVehicle')) == is_hp]
-                if eligible:
-                    opts = {"{} - Rs.{:,.0f}".format(s['Plot'], s['Amount']): s['id'] for s in eligible}
-                    sel_labels = st.multiselect("Select Collateral(s)", list(opts.keys()))
-                    selected_colls = [opts[lbl] for lbl in sel_labels]
-                else:
-                    st.warning("No {} collateral available.".format('Vehicle' if is_hp else 'Property'))
+if max_ltv_sel is not None:
+    override_ltv = st.checkbox("Override collateral requirement (LTV Exempt)")
+    if not override_ltv:
+        use_dedicated = st.checkbox("Assign dedicated collateral?")
+        coll_mode = "assigned" if use_dedicated else "pool"
+        if use_dedicated:
+            eligible = [s for s in st.session_state.fmv_sources if bool(s.get('IsVehicle')) == is_hp]
+            if eligible:
+                opts = {"{} - Rs.{:,.0f}".format(s['Plot'], s['Amount']): s['id'] for s in eligible}
+                sel_labels = st.multiselect("Select Collateral(s)", list(opts.keys()))
+                selected_colls = [opts[lbl] for lbl in sel_labels]
+            else:
+                st.warning("No {} collateral available.".format('Vehicle' if is_hp else 'Property'))
 
-        use_tie_up = st.checkbox("Tie up Property (additional security)?")
-        if use_tie_up and st.session_state.fmv_sources:
-            opts = {"{} - Rs.{:,.0f}".format(s['Plot'], s['Amount']): s['id'] for s in st.session_state.fmv_sources}
-            tie_sel = st.multiselect("Select properties to tie up", list(opts.keys()))
-            tie_up_colls = [opts[lbl] for lbl in tie_sel]
+    use_tie_up = st.checkbox("Tie up Property (additional security)?")
+    if use_tie_up and st.session_state.fmv_sources:
+        opts = {"{} - Rs.{:,.0f}".format(s['Plot'], s['Amount']): s['id'] for s in st.session_state.fmv_sources}
+        tie_sel = st.multiselect("Select properties to tie up", list(opts.keys()))
+        tie_up_colls = [opts[lbl] for lbl in tie_sel]
+else:
+    st.info("Unsecured facility — no collateral required for LTV.")
+
+if c_btn.button("Add to Portfolio", type="primary", use_container_width=True):
+    errors = []
+    if l_amt <= 0:
+        errors.append("Principal must be > 0")
+    if l_rate <= 0:
+        errors.append("Rate must be > 0")
+    if l_ten <= 0:
+        errors.append("Tenure must be >= 1")
+    if use_man and man_emi <= 0:
+        errors.append("Fixed EMI must be > 0")
+
+    cap_ok, cap_msg = _check_professional_caps(l_type, l_amt, st.session_state.loans)
+    if not cap_ok:
+        errors.append(cap_msg)
+
+    if errors:
+        for e in errors:
+            st.error(e)
     else:
-        st.info("Unsecured facility — no collateral required for LTV.")
+        std_emi = calculate_obligation(l_type, l_amt, l_rate, l_ten)
+        lid = st.session_state.loan_id_counter
+        st.session_state.loan_id_counter += 1
+        ac_id = _generate_loan_account_id(l_type)
 
-    if c_btn.button("Add to Portfolio", type="primary", use_container_width=True):
-        errors = []
-        if l_amt <= 0:
-            errors.append("Principal must be > 0")
-        if l_rate <= 0:
-            errors.append("Rate must be > 0")
-        if l_ten <= 0:
-            errors.append("Tenure must be >= 1")
-        if use_man and man_emi <= 0:
-            errors.append("Fixed EMI must be > 0")
+        st.session_state.loans.append({
+            "Loan Type": l_type,
+            "Principal": l_amt,
+            "Base Rate": l_rate,
+            "Tenure": l_ten,
+            "Base_Obligation": man_emi if use_man else std_emi,
+            "Required Multiplier": LOAN_CONFIG[l_type],
+            "Is_Manual": use_man,
+            "_loan_id": lid,
+            "loan_account_id": ac_id,
+            "collateral_mode": coll_mode,
+            "assigned_collateral_ids": selected_colls,
+            "tied_property_ids": tie_up_colls,
+            "override_ltv": override_ltv
+        })
+        st.success("✅ Added [{}] {}".format(ac_id, l_type))
+        st.rerun()
 
-        cap_ok, cap_msg = _check_professional_caps(l_type, l_amt, st.session_state.loans)
-        if not cap_ok:
-            errors.append(cap_msg)
-
-        if errors:
-            for e in errors:
-                st.error(e)
-        else:
-            std_emi = calculate_obligation(l_type, l_amt, l_rate, l_ten)
-            lid = st.session_state.loan_id_counter
-            st.session_state.loan_id_counter += 1
-            ac_id = _generate_loan_account_id(l_type)
-
-            st.session_state.loans.append({
-                "Loan Type": l_type,
-                "Principal": l_amt,
-                "Base Rate": l_rate,
-                "Tenure": l_ten,
-                "Base_Obligation": man_emi if use_man else std_emi,
-                "Required Multiplier": LOAN_CONFIG[l_type],
-                "Is_Manual": use_man,
-                "_loan_id": lid,
-                "loan_account_id": ac_id,
-                "collateral_mode": coll_mode,
-                "assigned_collateral_ids": selected_colls,
-                "tied_property_ids": tie_up_colls,
-                "override_ltv": override_ltv
-            })
-            st.success("✅ Added [{}] {}".format(ac_id, l_type))
-            st.rerun()
-
-    st.markdown("</div>", unsafe_allow_html=True)
+st.markdown("</div>", unsafe_allow_html=True)
 
 # ==========================================
 # RESULTS
@@ -1682,8 +1575,18 @@ if st.session_state.loans:
     ltv_results, ltv_summary = run_portfolio_ltv(st.session_state.loans, st.session_state.fmv_sources)
     ltv_overall_pass = ltv_summary['overall_pass']
 
-    # DTI UI
-    st.markdown("### 📉 Debt-to-Income (DTI) Analysis")
+    # ---------- DTI PANEL ----------
+    st.markdown("""
+    <div class="panel">
+        <div class="panel-head">
+            <div class="ph-icon ph-green">📉</div>
+            <div>
+                <div class="ph-title">Debt-to-Income (DTI) Analysis</div>
+                <div class="ph-sub">Waterfall allocation of obligations against effective income</div>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+
     if enable_stress:
         st.info("Active Scenario: **{}** | Rate Shock: +{}% | Income Shock: -{}%".format(
             scenario_name, stress_rate_val, stress_inc_val
@@ -1692,30 +1595,27 @@ if st.session_state.loans:
     k1, k2, k3, k4 = st.columns(4)
     with k1:
         st.markdown(
-            "<div class='metric-card'><div class='metric-label'>Monthly Obligation</div><div class='metric-value'>Rs.{:,.0f}</div></div>".format(
-                df_dti_res['Obligation'].sum()
-            ),
+            "<div class='metric-card mc-blue'><div class='metric-label'>Monthly Obligation</div>"
+            "<div class='metric-value'>Rs.{:,.0f}</div></div>".format(df_dti_res['Obligation'].sum()),
             unsafe_allow_html=True
         )
     with k2:
         st.markdown(
-            "<div class='metric-card'><div class='metric-label'>Aggregate Coverage</div><div class='metric-value'>{:.2f}x</div></div>".format(
-                dti_agg_dti
-            ),
+            "<div class='metric-card mc-green'><div class='metric-label'>Aggregate Coverage</div>"
+            "<div class='metric-value'>{:.2f}x</div></div>".format(dti_agg_dti),
             unsafe_allow_html=True
         )
     with k3:
         st.markdown(
-            "<div class='metric-card'><div class='metric-label'>Effective Income</div><div class='metric-value'>Rs.{:,.0f}</div></div>".format(
-                eff_income
-            ),
+            "<div class='metric-card mc-slate'><div class='metric-label'>Effective Income</div>"
+            "<div class='metric-value'>Rs.{:,.0f}</div></div>".format(eff_income),
             unsafe_allow_html=True
         )
     with k4:
+        _sf_class = 'mc-red' if dti_shortfall > 0 else 'mc-green'
         st.markdown(
-            "<div class='metric-card'><div class='metric-label'>Income Shortfall</div><div class='metric-value'>Rs.{:,.0f}</div></div>".format(
-                dti_shortfall
-            ),
+            "<div class='metric-card " + _sf_class + "'><div class='metric-label'>Income Shortfall</div>"
+            "<div class='metric-value'>Rs.{:,.0f}</div></div>".format(dti_shortfall),
             unsafe_allow_html=True
         )
 
@@ -1726,6 +1626,7 @@ if st.session_state.loans:
 
     disp_dti = df_dti_res.copy()
     disp_dti['Status'] = disp_dti['Pass_Status'].apply(lambda x: "✅ PASS" if x else "❌ FAIL")
+    st.markdown("<div class='table-wrap'>", unsafe_allow_html=True)
     st.dataframe(
         disp_dti[[
             'Loan Type', 'Amount', 'Effective_Rate', 'Obligation',
@@ -1734,38 +1635,44 @@ if st.session_state.loans:
         hide_index=True,
         use_container_width=True
     )
+    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    st.markdown("---")
+    # ---------- LTV PANEL ----------
+    st.markdown("""
+    <div class="panel">
+        <div class="panel-head">
+            <div class="ph-icon ph-purple">🏠</div>
+            <div>
+                <div class="ph-title">Loan-to-Value (LTV) Analysis</div>
+                <div class="ph-sub">Collateral coverage and portfolio exposure assessment</div>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
 
-    # LTV UI
-    st.markdown("### 🏠 Loan-to-Value (LTV) Analysis")
     k5, k6, k7, k8 = st.columns(4)
     with k5:
         st.markdown(
-            "<div class='metric-card'><div class='metric-label'>Total Exposure</div><div class='metric-value'>Rs.{:,.0f}</div></div>".format(
-                ltv_summary['total_exposure']
-            ),
+            "<div class='metric-card mc-blue'><div class='metric-label'>Total Exposure</div>"
+            "<div class='metric-value'>Rs.{:,.0f}</div></div>".format(ltv_summary['total_exposure']),
             unsafe_allow_html=True
         )
     with k6:
         st.markdown(
-            "<div class='metric-card'><div class='metric-label'>Total FMV</div><div class='metric-value'>Rs.{:,.0f}</div></div>".format(
-                ltv_summary['total_fmv']
-            ),
+            "<div class='metric-card mc-slate'><div class='metric-label'>Total FMV</div>"
+            "<div class='metric-value'>Rs.{:,.0f}</div></div>".format(ltv_summary['total_fmv']),
             unsafe_allow_html=True
         )
     with k7:
         st.markdown(
-            "<div class='metric-card'><div class='metric-label'>Weighted LTV</div><div class='metric-value'>{:.2f}%</div></div>".format(
-                ltv_summary['wtd_ltv']
-            ),
+            "<div class='metric-card mc-green'><div class='metric-label'>Weighted LTV</div>"
+            "<div class='metric-value'>{:.2f}%</div></div>".format(ltv_summary['wtd_ltv']),
             unsafe_allow_html=True
         )
     with k8:
         st.markdown(
-            "<div class='metric-card'><div class='metric-label'>Aggregate LTV</div><div class='metric-value'>{:.2f}%</div></div>".format(
-                ltv_summary['aggregate_ltv']
-            ),
+            "<div class='metric-card mc-purple'><div class='metric-label'>Aggregate LTV</div>"
+            "<div class='metric-value'>{:.2f}%</div></div>".format(ltv_summary['aggregate_ltv']),
             unsafe_allow_html=True
         )
 
@@ -1799,12 +1706,23 @@ if st.session_state.loans:
             "Status": "✅ PASS" if r['Pass_Status'] else "❌ FAIL"
         })
 
+    st.markdown("<div class='table-wrap'>", unsafe_allow_html=True)
     st.dataframe(pd.DataFrame(disp_ltv), hide_index=True, use_container_width=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    st.markdown("---")
+    # ---------- REPORT PANEL ----------
+    st.markdown("""
+    <div class="panel">
+        <div class="panel-head">
+            <div class="ph-icon ph-blue">📄</div>
+            <div>
+                <div class="ph-title">Generate Report</div>
+                <div class="ph-sub">Export the assessment as a formatted PDF document</div>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
 
-    # PDF EXPORT
-    st.markdown("### 📄 Generate Report")
     ec1, ec2, ec3 = st.columns([2, 1, 1])
 
     with ec1:
@@ -1879,6 +1797,8 @@ if st.session_state.loans:
             mime="application/pdf",
             use_container_width=True
         )
+
+    st.markdown("</div>", unsafe_allow_html=True)
 
 else:
     st.info(
