@@ -412,6 +412,15 @@ section[data-testid="stSidebar"] hr { border-color: #22304A !important; margin: 
 .table-wrap { border: 1px solid #E5EAF1; border-radius: 10px; overflow: hidden; }
 .table-wrap [data-testid="stDataFrame"] { border: none !important; border-radius: 0 !important; }
 
+/* --- Facility list (main area, deletable loans) --- */
+.fac-list { border: 1px solid #E5EAF1; border-radius: 10px; overflow: hidden; }
+.fac-item { display: flex; align-items: center; gap: 0.6rem; padding: 0.55rem 0.8rem;
+            border-bottom: 1px solid #EDF1F6; font-size: 0.85rem; }
+.fac-item:last-child { border-bottom: none; }
+.fac-id { font-weight: 700; color: #1D4ED8; min-width: 70px; }
+.fac-name { color: #334155; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fac-val { color: #0F172A; font-weight: 600; font-variant-numeric: tabular-nums; }
+
 /* --- Main-area inputs (scoped to <main>) --- */
 main div[data-testid="stTextInput"] > div,
 main div[data-testid="stNumberInput"] > div,
@@ -508,6 +517,8 @@ HP_FACILITY_TYPES = {"HP Loan", "HP Loan Commercial", "HP Loan (Used)", "HP Loan
 PROFESSIONAL_OD_CAP       = 500_000.0
 PROFESSIONAL_TL_CAP       = 1_500_000.0
 PROFESSIONAL_COMBINED_CAP = 1_500_000.0
+
+BASE_INCOME_LABEL = "Base Monthly Income"
 
 # ==========================================
 # STATE
@@ -1348,44 +1359,57 @@ with st.sidebar:
 
     with st.expander("💰 Income & Stress Configuration (DTI)", expanded=True):
         inc_mode = st.radio("Income Entry Method", ["Single Total", "Multiple Sources"])
-        gross_income = 0.0
-        base_income = 0.0
 
+        # ---------- Entry fields ----------
         if inc_mode == "Single Total":
-            base_income = st.number_input("Base Monthly Income (Rs.)", value=150000.0, step=5000.0)
-            st.caption("Base income is automatically summed with any sources added to the ledger below.")
-
-        # --- Income Sources Ledger (available in BOTH modes) ---
-        st.markdown("<div class='sb-sec-label'>Income Sources Ledger</div>", unsafe_allow_html=True)
-
-        c1, c2 = st.columns([1.5, 1])
-        src = c1.text_input("Income Source", key="inc_src_name")
-        amt = c2.number_input("Amount (Rs.)", min_value=0.0, key="inc_src_amt")
-        if st.button("➕ Add Source", type="primary", use_container_width=True, key="add_src_btn"):
-            if src.strip() and amt > 0:
-                st.session_state.income_sources.append({"Source": src.strip(), "Amount": amt})
-                st.rerun()
-
-        total_sources = sum(x['Amount'] for x in st.session_state.income_sources)
-
-        if st.session_state.income_sources:
-            rows_html = "".join(
-                "<div class='sb-list-item'><span class='sb-li-dot'></span>"
-                "<span class='sb-li-name'>{}</span>"
-                "<span class='sb-li-val'>Rs. {:,.0f}</span></div>".format(x['Source'], x['Amount'])
-                for x in st.session_state.income_sources
+            base_income = st.number_input(
+                "Base Monthly Income (Rs.)", value=150000.0, step=5000.0, key="base_income_input"
             )
-            st.markdown("<div class='sb-list'>" + rows_html + "</div>", unsafe_allow_html=True)
+            st.caption("Enter the base amount, then click **Add Source** to record it as a single income entry.")
+        else:
+            c1, c2 = st.columns([1.5, 1])
+            src = c1.text_input("Income Source", key="inc_src_name")
+            amt = c2.number_input("Amount (Rs.)", min_value=0.0, key="inc_src_amt")
 
+        # ---------- Single Add Source button ----------
+        if st.button("➕ Add Source", type="primary", use_container_width=True, key="add_src_btn"):
             if inc_mode == "Single Total":
-                st.markdown(
-                    "<div class='sb-list-total'>Base Rs. {:,.0f} + Sources Rs. {:,.0f}</div>".format(base_income, total_sources),
-                    unsafe_allow_html=True
-                )
-                gross_income = base_income + total_sources
+                if base_income > 0:
+                    # Replace any existing base entry (no duplication)
+                    st.session_state.income_sources = [
+                        s for s in st.session_state.income_sources
+                        if s.get('Source') != BASE_INCOME_LABEL
+                    ]
+                    st.session_state.income_sources.append(
+                        {"Source": BASE_INCOME_LABEL, "Amount": base_income}
+                    )
+                    st.rerun()
+                else:
+                    st.warning("Enter a base income greater than zero.")
             else:
-                gross_income = total_sources
+                if src.strip() and amt > 0:
+                    st.session_state.income_sources.append({"Source": src.strip(), "Amount": amt})
+                    st.rerun()
 
+        # ---------- Ledger with per-row delete ----------
+        if st.session_state.income_sources:
+            st.markdown("<div class='sb-sec-label'>Recorded Income Entries</div>", unsafe_allow_html=True)
+
+            for idx, s in enumerate(list(st.session_state.income_sources)):
+                col_a, col_b = st.columns([6, 1])
+                with col_a:
+                    st.markdown(
+                        "<div class='sb-list-item'><span class='sb-li-dot'></span>"
+                        "<span class='sb-li-name'>{}</span>"
+                        "<span class='sb-li-val'>Rs. {:,.0f}</span></div>".format(s['Source'], s['Amount']),
+                        unsafe_allow_html=True
+                    )
+                with col_b:
+                    if st.button("✕", key="del_inc_{}".format(idx), type="secondary"):
+                        st.session_state.income_sources.pop(idx)
+                        st.rerun()
+
+            gross_income = sum(x['Amount'] for x in st.session_state.income_sources)
             st.markdown(
                 "<div class='sb-list-total' style='color:#F8FAFC !important; font-weight:700;'>Gross Total: Rs. {:,.0f}</div>".format(gross_income),
                 unsafe_allow_html=True
@@ -1395,7 +1419,7 @@ with st.sidebar:
                 st.session_state.income_sources = []
                 st.rerun()
         else:
-            gross_income = base_income if inc_mode == "Single Total" else 0.0
+            gross_income = 0.0
 
         st.markdown("---")
         enable_stress = st.toggle("Enable Stress Testing", value=False)
@@ -1657,6 +1681,39 @@ if st.session_state.loans:
     ltv_results, ltv_summary = run_portfolio_ltv(st.session_state.loans, st.session_state.fmv_sources)
     ltv_overall_pass = ltv_summary['overall_pass']
 
+    # ---------- ACTIVE FACILITIES PANEL (delete any loan) ----------
+    st.markdown("""
+    <div class="panel">
+        <div class="panel-head">
+            <div class="ph-icon ph-blue">🗂️</div>
+            <div>
+                <div class="ph-title">Active Facilities</div>
+                <div class="ph-sub">Review portfolio entries — remove any facility that is not required</div>
+            </div>
+        </div>
+        <div class="fac-list">
+    """, unsafe_allow_html=True)
+
+    for loan in st.session_state.loans:
+        col_a, col_b = st.columns([10, 1])
+        with col_a:
+            st.markdown(
+                "<div class='fac-item'><span class='fac-id'>{}</span>"
+                "<span class='fac-name'>{}</span>"
+                "<span class='fac-val'>Rs. {:,.0f}</span></div>".format(
+                    loan.get('loan_account_id', 'N/A'), loan['Loan Type'], loan['Principal']),
+                unsafe_allow_html=True
+            )
+        with col_b:
+            if st.button("✕", key="del_loan_{}".format(loan['_loan_id']),
+                         type="secondary", use_container_width=True):
+                st.session_state.loans = [
+                    l for l in st.session_state.loans if l['_loan_id'] != loan['_loan_id']
+                ]
+                st.rerun()
+
+    st.markdown("</div></div>", unsafe_allow_html=True)
+
     # ---------- DTI PANEL ----------
     st.markdown("""
     <div class="panel">
@@ -1831,11 +1888,6 @@ if st.session_state.loans:
                         else ('DTI' if 'DTI' in report_type else 'LTV')
                     )
 
-                    # Build itemized income list for the report (both modes)
-                    report_income_sources = list(st.session_state.income_sources)
-                    if inc_mode == "Single Total" and base_income > 0:
-                        report_income_sources = [{"Source": "Base Income", "Amount": base_income}] + report_income_sources
-
                     payload = {
                         'gross_income': gross_income,
                         'eff_income': eff_income,
@@ -1849,7 +1901,7 @@ if st.session_state.loans:
                         'df_dti_res': df_dti_res if r_type in ['DTI', 'Integrated'] else None,
                         'ltv_results': ltv_results if r_type in ['LTV', 'Integrated'] else [],
                         'ltv_summary': ltv_summary if r_type in ['LTV', 'Integrated'] else {},
-                        'income_sources': report_income_sources,
+                        'income_sources': list(st.session_state.income_sources),
                         'fmv_sources': st.session_state.fmv_sources,
                         'report_scope': r_type,
                         'generated_by': st.session_state.get('auth_username', ''),
